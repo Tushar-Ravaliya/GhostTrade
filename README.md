@@ -275,7 +275,9 @@ docker-compose up
 
 ## 👨‍💻 Author
 
-Tushar Ravaliya
+- Tushar Ravaliya
+- Keyuri Jethwa
+- Harshit Nananiya
 
 ---
 

@@ -15,7 +15,10 @@ app.use(
   })
 );
 
+import healthCheckRouter from './routes/healthcheck.route.js';
+app.use('/api/v1/healthcheck', healthCheckRouter);
+
 app.get('/api/testing', (req, res) => {
-  return console.log('scdd');
+  return res.send('success');
 });
 export default app;

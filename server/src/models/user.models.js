@@ -1,6 +1,7 @@
-import mongoos, { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import bcrypt from 'bcrypt';
 
-const userScheama = new Schema(
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -32,17 +33,17 @@ const userScheama = new Schema(
       default: 'inactive',
     },
 
-    refreshToken: {
-      type: String,
-    },
+    // refreshToken: {
+    //   type: String,
+    // },
 
-    forgotPasswordToken: {
-      type: String,
-    },
+    // forgotPasswordToken: {
+    //   type: String,
+    // },
 
-    forgotPasswordExpiry: {
-      type: Date,
-    },
+    // forgotPasswordExpiry: {
+    //   type: Date,
+    // },
 
     balance: {
       type: Number,
@@ -52,4 +53,14 @@ const userScheama = new Schema(
   { timestamps: true }
 );
 
-export const User = mongoos.model('User', userScheama);
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+export const userModel = mongoose.model('User', userSchema);

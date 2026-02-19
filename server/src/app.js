@@ -1,10 +1,18 @@
 import express from 'express';
 import cors from 'cors';
+import healthCheckRouter from './routes/healthcheck.route.js';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+
+dotenv.config({
+  path: './.env',
+});
 const app = express();
 
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
 app.use(express.static('public'));
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -15,10 +23,6 @@ app.use(
   })
 );
 
-import healthCheckRouter from './routes/healthcheck.route.js';
 app.use('/api/v1/healthcheck', healthCheckRouter);
 
-app.get('/api/testing', (req, res) => {
-  return res.send('success');
-});
 export default app;

@@ -9,8 +9,6 @@ import Profile from "./Pages/Profile";
 import History from "./Pages/History";
 import Register from "./Pages/Register";
 import NotFound from "./Pages/NotFound";
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
 import Layout from "./Layout";
 
 export default function App() {

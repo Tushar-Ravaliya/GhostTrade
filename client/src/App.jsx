@@ -16,16 +16,16 @@ export default function App() {
     <>
       <div>
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/market" element={<Market />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/history" element={<History />} />
-            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </div>

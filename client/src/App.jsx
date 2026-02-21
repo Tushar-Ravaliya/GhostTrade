@@ -15,7 +15,7 @@ import Footer from "./Components/Footer";
 export default function App() {
   return (
     <>
-      <div className="h-screen w-full bg-black">
+      <div className="h-full w-full bg-black">
         {/* <Login /> */}
         
           <Navbar/>
@@ -30,7 +30,7 @@ export default function App() {
             <Route path="/history" element={<History/>}/>
             <Route path='*' element={<NotFound/>}/>
         </Routes>
-        <Footer/>
+        
       </div>
     </>
   );

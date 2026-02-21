@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
     return (
-        <div className='absolute bottom-0'>
-
+        <>
+        <div className='h-[1px] w-full bg-gray-200'></div>
             <div className='flex  px-8 py-4 justify-between text-white h-full w-full items-center gap-10'>
                 <div className='flex flex-wrap h-full w-full'>
                     <div className='flex justify-between items-center gap-3'>
@@ -13,7 +13,9 @@ export default function Footer() {
                     </div>
 
                     <p className='text-gray-400'>We provide a powerful, risk-free environment for traders to sharpen their skills. By using real-time market data in a simulated setting, we empower you to test strategies and build confidence before ever committing a single rupee of real capital.</p>
+                    
                 </div>
+                <div className='h-full w-4 bg-gray-200'></div>
                 <div className='flex flex-col h-full w-full'>
                     <p className='font-bold text-2xl'>Outlooks</p>
                     <Link to='/'>Home</Link>
@@ -50,10 +52,10 @@ export default function Footer() {
                 </div>
 
             </div>
-            <div className='flex items-center font-bold text-6xl tracking-[24px] px-8 py-4'>
+            <div className='flex items-center font-bold text-6xl tracking-[23px] px-8 py-4'>
                 <p className='text-white '>NO PRESSURE /</p>
                 <p className='text-green-700 '>  NO DIAMONDS</p>
             </div>
-        </div>
+        </>
     )
 }

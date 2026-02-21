@@ -8,12 +8,11 @@ export default function Home() {
     <div className="text-white ">
       <HeroText />
       <Buttons />
-      <div className="flex w-screen justify-between px-60 overflow-hidden">
+      <div className="flex flex-wrap justify-center gap-12 w-full max-w-5xl mx-auto px-8 py-10">
         <Features />
         <Features />
         <Features />
       </div>
-      <Footer />
     </div>
   );
 }

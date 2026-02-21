@@ -1,1 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Frijole&display=swap');
 @import "tailwindcss";
+@theme {
+  --color-green: #008000;
+}

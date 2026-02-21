@@ -15,7 +15,7 @@ import Footer from "./Components/Footer";
 export default function App() {
   return (
     <>
-      <div className="h-full w-full bg-black">
+      <div className=" w-screen bg-black">
         {/* <Login /> */}
         
           <Navbar/>

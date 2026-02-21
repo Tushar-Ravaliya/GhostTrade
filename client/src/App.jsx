@@ -19,7 +19,7 @@ export default function App() {
         {/* <Login /> */}
         
           <Navbar/>
-         <Routes>
+          <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
@@ -29,7 +29,7 @@ export default function App() {
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/history" element={<History/>}/>
             <Route path='*' element={<NotFound/>}/>
-        </Routes>
+          </Routes>
         
       </div>
     </>

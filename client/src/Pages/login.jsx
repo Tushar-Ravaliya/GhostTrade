@@ -11,10 +11,10 @@ export default function Login() {
         <div className=' flex justify-start  py-10  bg-black/50 rounded-2xl h-3/4 w-3/4 mx-70 my-20'>
           <div
             className="mx-10 my-10 w-full md:w-1/2 shrink-0   rounded-xl h-full flex items-center justify-center "
-            style={{
-              transform: 'skewX(-10deg)', // Skew creates the slant
-              left: '-50%' // Adjust position to hide the left-side skew
-            }}
+            // style={{
+            //   transform: 'skewX(-10deg)', // Skew creates the slant
+            //   left: '-50%' // Adjust position to hide the left-side skew
+            // }}
           >
             <Image />
           </div>

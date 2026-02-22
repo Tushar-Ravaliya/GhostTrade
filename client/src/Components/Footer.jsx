@@ -6,7 +6,7 @@ export default function Footer() {
         <>
             <div className='h-px w-full bg-gray-200'></div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-8 py-10 text-white'>
-                
+
                 <div className='flex flex-col gap-4'>
                     <div className='flex items-center gap-3'>
                         <img className='rounded-full h-12 w-12 object-cover' src="Images/Logo1.jpeg" alt="Logo" />
@@ -15,7 +15,7 @@ export default function Footer() {
                         </p>
                     </div>
                     <p className='text-gray-400 text-sm leading-relaxed'>
-                        We provide a powerful, risk-free environment for traders to sharpen their skills. 
+                        We provide a powerful, risk-free environment for traders to sharpen their skills.
                         By using real-time market data in a simulated setting.
                     </p>
                 </div>
@@ -46,7 +46,7 @@ export default function Footer() {
 
                 <div className='flex flex-col gap-2'>
                     <p className='font-bold text-xl mb-2'>Contact Us</p>
-                    <p className='text-gray-400'>66 Road Brooklyn Street, 600 <br/> New York, USA</p>
+                    <p className='text-gray-400'>66 Road Brooklyn Street, 600 <br /> New York, USA</p>
                     <p className='text-gray-400 mt-2'>needhelp@company.com</p>
                     <p className='text-green-700 font-semibold'>+92 (666) 888 0000</p>
                 </div>

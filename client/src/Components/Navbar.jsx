@@ -56,19 +56,19 @@ export default function Navbar() {
 
 
           {isProfileOpen && (
-            <div className="absolute right-0 top-14 w-48 bg-gray-900 border border-gray-800 rounded-lg shadow-xl py-2 z-[60]">
-              <Link to="/profile" className="flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-gray-800 hover:text-green-500 transition-colors" onClick={() => setIsProfileOpen(false)}>
+            <div className="absolute right-0 top-14 w-48 bg-black border border-gray-800 rounded-lg shadow-xl py-2">
+              <Link to="/profile" className="flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-white/10 hover:text-green transition-colors" onClick={() => setIsProfileOpen(false)}>
                 <User size={18} /> Profile
               </Link>
-              <Link to="/portfolio" className="flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-gray-800 hover:text-green-500 transition-colors" onClick={() => setIsProfileOpen(false)}>
+              <Link to="/portfolio" className="flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-white/10 hover:text-green transition-colors" onClick={() => setIsProfileOpen(false)}>
                 <Briefcase size={18} /> Portfolio
               </Link>
-              <Link to="/history" className="flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-gray-800 hover:text-green-500 transition-colors" onClick={() => setIsProfileOpen(false)}>
+              <Link to="/history" className="flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-white/10 hover:text-green transition-colors" onClick={() => setIsProfileOpen(false)}>
                 <History size={18} /> History
               </Link>
               <hr className="border-gray-800 my-1" />
               <button
-                className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-gray-800 transition-colors text-left font-semibold"
+                className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-white/10 transition-colors text-left font-semibold"
                 onClick={logout}
               >
                 <LogOut size={18} /> Logout

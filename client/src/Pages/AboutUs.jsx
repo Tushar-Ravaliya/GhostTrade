@@ -1,11 +1,11 @@
 import React from 'react'
-
+import HeroText from '../Components/AboutUs/HerotText'
+import Card from '../Components/AboutUs/Card'
 export default function AboutUs() {
   return (
     <>
-    <div className='flex h-full w-full justify-center items-center text-white font-bold underline'>
-            About us
-        </div>
+      <HeroText />
+      <Card />
     </>
   )
 }

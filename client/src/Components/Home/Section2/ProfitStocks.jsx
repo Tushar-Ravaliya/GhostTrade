@@ -1,14 +1,78 @@
-import React from 'react';
+import React from "react";
 
 const stocksData = [
-  { id: 1, initial: 'K', symbol: 'KALYANJIT', name: 'Kalyan Jewelers India Ltd.', price: '396.55', currency: 'INR', change: '+12.16 %' },
-  { id: 2, initial: 'I', symbol: 'IDEA', name: 'Kalyan Jewelers India Ltd.', price: '396.55', currency: 'INR', change: '+12.16 %' },
-  { id: 3, initial: 'A', symbol: 'Airtel', name: 'Airtel', price: '396.55', currency: 'INR', change: '+12.16 %' },
-  { id: 4, initial: 'K', symbol: 'Suzlon', name: 'Suzlon energy Ltd.', price: '396.55', currency: 'INR', change: '+12.16 %' },
-  { id: 5, initial: 'P', symbol: 'PNB', name: 'Kalyan Jewelers India Ltd.', price: '396.55', currency: 'INR', change: '+12.16 %' },
-  { id: 6, initial: 'I', symbol: 'Infosys Limited', name: 'Kalyan Jewelers India Ltd.', price: '396.55', currency: 'INR', change: '+12.16 %' },
-  { id: 7, initial: 'H', symbol: 'HDFC BANK', name: 'Kalyan Jewelers India Ltd.', price: '396.55', currency: 'INR', change: '+12.16 %' },
-  { id: 8, initial: 'E', symbol: 'Everest Organics', name: 'Kalyan Jewelers India Ltd.', price: '396.55', currency: 'INR', change: '+12.16 %' },
+  {
+    id: 1,
+    initial: "K",
+    symbol: "KALYANJIT",
+    name: "Kalyan Jewelers India Ltd.",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
+  {
+    id: 2,
+    initial: "I",
+    symbol: "IDEA",
+    name: "Kalyan Jewelers India Ltd.",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
+  {
+    id: 3,
+    initial: "A",
+    symbol: "Airtel",
+    name: "Airtel",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
+  {
+    id: 4,
+    initial: "K",
+    symbol: "Suzlon",
+    name: "Suzlon energy Ltd.",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
+  {
+    id: 5,
+    initial: "P",
+    symbol: "PNB",
+    name: "Kalyan Jewelers India Ltd.",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
+  {
+    id: 6,
+    initial: "I",
+    symbol: "Infosys Limited",
+    name: "Kalyan Jewelers India Ltd.",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
+  {
+    id: 7,
+    initial: "H",
+    symbol: "HDFC BANK",
+    name: "Kalyan Jewelers India Ltd.",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
+  {
+    id: 8,
+    initial: "E",
+    symbol: "Everest Organics",
+    name: "Kalyan Jewelers India Ltd.",
+    price: "396.55",
+    currency: "INR",
+    change: "+12.16 %",
+  },
 ];
 
 export default function ProfitStocks() {
@@ -24,8 +88,8 @@ export default function ProfitStocks() {
       {/* Grid container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {stocksData.map((stock) => (
-          <div 
-            key={stock.id} 
+          <div
+            key={stock.id}
             className="border-2 hover:border-green hover:bg-green/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
           >
             {/* Top: Logo and Company Info */}

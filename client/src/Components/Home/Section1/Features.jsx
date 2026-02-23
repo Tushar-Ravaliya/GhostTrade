@@ -13,7 +13,7 @@ const Features = (props) => {
         {props.text1}
       </h3>
 
-      <p className="text-lg text-gray-400">{props.text2}</p>
+      <p className="text-lg text-zinc-700">{props.text2}</p>
     </div>
   );
 };

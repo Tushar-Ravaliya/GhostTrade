@@ -13,7 +13,7 @@ const stocksData = [
 
 export default function LossStocks() {
   return (
-    <div className="min-h-screen bg-black text-white p-6 md:p-10 font-sans">
+    <div className=" bg-black text-white p-6 md:p-10 font-sans">
       {/* Header section */}
       <div className="flex items-center gap-3 mb-8">
         <h1 className="text-3xl md:text-4xl font-medium tracking-wide text-gray-50">

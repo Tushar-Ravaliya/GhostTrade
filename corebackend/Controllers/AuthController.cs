@@ -1,9 +1,9 @@
-﻿using BCrypt.Net;
-using corebackend.Services;
-using corebackend.Models; // Ensure your User model is here
-using corebackend.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using corebackend.Models;
+using corebackend.Services; // Ensure this matches your namespace
+using BCrypt.Net;
+using System.Text.Json.Serialization;
 
 namespace corebackend.Controllers
 {
@@ -11,58 +11,60 @@ namespace corebackend.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<users> _users;
 
         public AuthController(MongoService mongoService)
         {
-            // Connects to the "Users" collection in MongoDB
-            _users = mongoService.GetCollection<User>("Users");
+            _users = mongoService.GetCollection<users>("users");
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            // 1. Check if user already exists
-            var existingUser = await _users.Find(u => u.Email == model.Email).FirstOrDefaultAsync();
-            if (existingUser != null) return BadRequest("User with this email already exists.");
+            // 1. Check if user exists
+            var existingUser = await _users.Find(u => u.email == request.Email).FirstOrDefaultAsync();
+            if (existingUser != null) return BadRequest(new { message = "Email already registered" });
 
-            // 2. Hash the password using BCrypt
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
-
-            // 3. Create the User object
-            var newUser = new User
+            // 2. Create new user with your model fields
+            var newUser = new users
             {
-                Username = model.Username,
-                Email = model.Email,
-                PasswordHash = passwordHash
+                name = request.Name,
+                email = request.Email,
+                password = BCrypt.Net.BCrypt.HashPassword(request.Password), // Hash for security
+                mobileNo = request.MobileNo,
+                status = "Active",
+                balance = 10000, // Initializing as string per your model
+                createdAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                updatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                __v = 0
+
             };
 
-            // 4. Save to MongoDB
             await _users.InsertOneAsync(newUser);
-            return Ok(new { message = "Registration successful!" });
+            return Ok(new { message = "User created successfully" });
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            // 1. Find user by email
-            var user = await _users.Find(u => u.Email == model.Email).FirstOrDefaultAsync();
-            if (user == null) return Unauthorized("Invalid email or password.");
+            // 1. Find user
+            var user = await _users.Find(u => u.email == request.Email).FirstOrDefaultAsync();
+            if (user == null) return Unauthorized(new { message = "Invalid email or password" });
 
-            // 2. Verify the hashed password
-            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash);
-            if (!isPasswordValid) return Unauthorized("Invalid email or password.");
+            // 2. Verify Password
+            bool isValid = BCrypt.Net.BCrypt.Verify(request.Password, user.password);
+            if (!isValid) return Unauthorized(new { message = "Invalid email or password" });
 
-            // 3. Success (Ideally, return a JWT token here)
+            // 3. Return User Data (Excluding password for security)
             return Ok(new
             {
-                message = "Login successful!",
-                user = new { user.Id, user.Username, user.Email }
+                message = "Welcome back!",
+                data = new { user.id, user.name, user.email, user.balance, user.status }
             });
         }
     }
 
-    // Data Transfer Objects (DTOs) for clean input handling
-    public record RegisterDto(string Username, string Email, string Password);
-    public record LoginDto(string Email, string Password);
+    // DTOs for incoming JSON
+    public record RegisterRequest(string Name, string Email, string Password, string MobileNo);
+    public record LoginRequest(string Email, string Password);
 }

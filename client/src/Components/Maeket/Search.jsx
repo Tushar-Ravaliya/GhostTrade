@@ -1,6 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 export default function Search() {
+
+  const [title, setTitle] = useState("") 
+
+  const setvalues = (e) =>{
+    setTitle(e.target.value
+    )
+  }
+
   return (
     <div className="w-full min-h-[400px] bg-black flex flex-col items-center justify-center p-6 space-y-6 font-sans">
       
@@ -44,6 +52,10 @@ export default function Search() {
           type="text" 
           placeholder="Search.." 
           className="w-full bg-transparent outline-none text-black text-lg md:text-xl placeholder-[#a3a3a3] font-medium"
+          onChange={(e)=>{
+            setvalues(e)
+          }}
+          value={title}
         />
       </div>
 

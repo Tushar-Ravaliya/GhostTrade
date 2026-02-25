@@ -1,11 +1,12 @@
 import React from 'react'
+import Status from '../Components/Portfolio/Status.jsx'
+import Table from '../Components/Portfolio/Table.jsx'
 
 export default function Portfolio() {
     return (
         <>
-        <div className='flex h-full w-full justify-center items-center text-white font-bold underline'>
-            Portfolio
-        </div>
+        <Status />
+        <Table />
         </>
     )
 }

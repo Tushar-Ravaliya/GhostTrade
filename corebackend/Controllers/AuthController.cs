@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using corebackend.Models;
 using corebackend.Services; // Ensure this matches your namespace
 using BCrypt.Net;
+using System.Text.Json.Serialization;
 
 namespace corebackend.Controllers
 {
@@ -10,11 +11,11 @@ namespace corebackend.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<users> _users;
 
         public AuthController(MongoService mongoService)
         {
-            _users = mongoService.GetCollection<User>("Users");
+            _users = mongoService.GetCollection<users>("users");
         }
 
         [HttpPost("register")]
@@ -25,16 +26,18 @@ namespace corebackend.Controllers
             if (existingUser != null) return BadRequest(new { message = "Email already registered" });
 
             // 2. Create new user with your model fields
-            var newUser = new User
+            var newUser = new users
             {
                 name = request.Name,
                 email = request.Email,
                 password = BCrypt.Net.BCrypt.HashPassword(request.Password), // Hash for security
                 mobileNo = request.MobileNo,
                 status = "Active",
-                balance = 0, // Initializing as string per your model
+                balance = 10000, // Initializing as string per your model
                 createdAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                updatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+                updatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                __v = 0
+
             };
 
             await _users.InsertOneAsync(newUser);

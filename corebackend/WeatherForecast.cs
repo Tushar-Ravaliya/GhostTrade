@@ -10,4 +10,5 @@ namespace corebackend
 
         public string? Summary { get; set; }
     }
+
 }

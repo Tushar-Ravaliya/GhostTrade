@@ -9,6 +9,7 @@ import Profile from "./Pages/Profile";
 import History from "./Pages/History";
 import Register from "./Pages/Register";
 import NotFound from "./Pages/NotFound";
+import StockDetails from "./Pages/StockDetails";
 import Layout from "./Layout";
 
 export default function App() {
@@ -27,6 +28,8 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/history" element={<History />} />
           </Route>
+          <Route path="/StockDatails" element={<StockDetails />} />
+
         </Routes>
       </div>
     </>

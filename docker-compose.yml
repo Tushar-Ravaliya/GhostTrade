@@ -10,7 +10,9 @@ services:
     environment:
       - PORT=5000
     volumes:
-      - ./server:/app
+      - ./server/src:/app/src
+      - ./server/public:/app/public
+      - ./server/nodemon.json:/app/nodemon.json
       - /app/node_modules
 
   client:

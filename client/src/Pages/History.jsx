@@ -37,7 +37,7 @@ const History = () => {
         
         {/* Responsive Table Wrapper */}
         <div className="overflow-x-auto rounded-lg border border-[#262626]">
-          <table className="w-full min-w-[800px] text-left border-collapse">
+          <table className="w-full min-w-200 text-left border-collapse">
             
             {/* Table Head */}
             <thead className="bg-black text-white border-b border-[#262626]">

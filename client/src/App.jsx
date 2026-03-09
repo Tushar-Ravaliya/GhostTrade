@@ -27,9 +27,8 @@ export default function App() {
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/history" element={<History />} />
+            <Route path="/StockDatails" element={<StockDetails />} />
           </Route>
-          <Route path="/StockDatails" element={<StockDetails />} />
-
         </Routes>
       </div>
     </>

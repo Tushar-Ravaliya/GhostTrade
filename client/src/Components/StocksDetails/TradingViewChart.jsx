@@ -29,7 +29,7 @@ function TradingViewChart() {
 
   return (
     // Tailwind classes used for layout and height
-    <div className="flex flex-col h-screen w-full p-4 bg-slate-900">
+    <div className="flex flex-col h-[70vh] w-full p-4 bg-white/10 rounded-sm">
       <div 
         className="tradingview-widget-container border border-slate-700 rounded-lg overflow-hidden" 
         ref={container} 

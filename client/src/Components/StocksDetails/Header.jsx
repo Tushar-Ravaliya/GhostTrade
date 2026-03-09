@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <div className="w-full bg-black flex items-center p-4 md:p-15 md:px-30 min-h-30">
+    <div className="w-full bg-black flex items-center p-4 md:p-15 md:px-25 min-h-30">
       <div className="flex items-center space-x-4 md:space-x-6">
         
         {/* Logo Circle */}

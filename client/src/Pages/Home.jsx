@@ -29,12 +29,15 @@ export default function Home() {
       <HeroText />
       <Buttons />
       <div className="flex flex-wrap justify-center gap-36 w-full max-w-5xl mx-auto px-8 py-10">
-        {f.map((fe) => (
-          <Features icon={fe.icon} text1={fe.text1} text2={fe.text2} />
+        {f.map((fe,idx) => (
+          <div key={idx}>
+            <Features  icon={fe.icon} text1={fe.text1} text2={fe.text2} />
+          </div>
         ))}
       </div>
       <ProfitStocks />
       <LossStocks />
+      {/* <Charts /> */}
     </div>
   );
 }

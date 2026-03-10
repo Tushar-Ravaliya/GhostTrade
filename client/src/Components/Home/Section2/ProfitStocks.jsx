@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Charts from "./Charts";
 const stocksData = [
   {
     id: 1,
@@ -126,10 +125,6 @@ export default function ProfitStocks() {
                   <span className="text-sm text-[#00ff00] tracking-wide">
                     {stock.change}
                   </span>
-                </div>
-                {/* Chart view  */}
-                <div>
-                  <Charts />
                 </div>
               </div>
             </div>

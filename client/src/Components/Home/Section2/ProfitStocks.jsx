@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import Charts from "./Charts";
 const stocksData = [
   {
     id: 1,
@@ -113,18 +113,24 @@ export default function ProfitStocks() {
               </div>
 
               {/* Bottom: Price and Change */}
-              <div className="flex flex-col gap-1">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-base font-medium tracking-wider text-gray-200">
-                    {stock.price}
-                  </span>
-                  <span className="text-[10px] text-gray-500 font-medium">
-                    {stock.currency}
+              <div className="flex gap-1">
+                <div>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-base font-medium tracking-wider text-gray-200">
+                      {stock.price}
+                    </span>
+                    <span className="text-[10px] text-gray-500 font-medium">
+                      {stock.currency}
+                    </span>
+                  </div>
+                  <span className="text-sm text-[#00ff00] tracking-wide">
+                    {stock.change}
                   </span>
                 </div>
-                <span className="text-sm text-[#00ff00] tracking-wide">
-                  {stock.change}
-                </span>
+                {/* Chart view  */}
+                <div>
+                  <Charts />
+                </div>
               </div>
             </div>
           </Link>

@@ -35,7 +35,6 @@ export default function Home() {
       </div>
       <ProfitStocks />
       <LossStocks />
-      <Footer />
     </div>
   );
 }

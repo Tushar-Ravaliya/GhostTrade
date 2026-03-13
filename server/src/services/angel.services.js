@@ -1,22 +1,24 @@
 import smartApi from '../config/angel.config.js';
-import { generateSecret } from 'otplib';
-import dotenv from 'dotenv';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { authenticator } = require('otplib');
 
 
-dotenv.config({
-  path: './../.env',
-});
 let sessionData = null;
 
 async function loginAngel() {
   try {
-    const totp = generateSecret(process.env.ANGEL_TOTP_SECRET);
+    const totp = authenticator.generate(process.env.ANGEL_TOTP_SECRET);
 
     const session = await smartApi.generateSession(
       process.env.ANGEL_CLIENT_CODE,
       process.env.ANGEL_PASSWORD,
       totp
     );
+
+    if (!session.data) {
+      throw new Error(`generateSession returned no data: ${JSON.stringify(session)}`);
+    }
 
     sessionData = session.data;
 

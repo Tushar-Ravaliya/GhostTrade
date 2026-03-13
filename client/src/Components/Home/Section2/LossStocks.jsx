@@ -31,7 +31,7 @@ export default function LossStocks() {
             <Link to="/StockDatails" className="hover:text-red-600 transition-colors">
               <div
                 key={lower.symbolToken}
-                className="border-2 hover:border-red-600 hover:bg-green/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
+                className="border-2 hover:border-red-600 hover:bg-red-500/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
               >
                 {/* Top: Logo and Company Info */}
                 <div className="flex items-center gap-4 mb-8">

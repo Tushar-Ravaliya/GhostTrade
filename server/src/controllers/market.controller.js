@@ -1,6 +1,7 @@
 // import { asyncHandler } from '../utils/async-handler';
 // import { ApiResponse } from '../utils/api-response';
-import { getLTP } from '../services/angel.services.js'
+import { getLTP,getLowerMarketData,getGainerMarketData } from '../services/angel.services.js'
+
 const getMarketData = async (req, res) => {
 
   try {
@@ -23,4 +24,33 @@ const getMarketData = async (req, res) => {
 
 };
 
-export { getMarketData }
+const getLowerData=async(req,res)=>{
+  try{
+  const data=await getLowerMarketData()
+    console.log(data);
+    
+  res.json(data)
+  }
+  catch(error){
+    res.status(500).json({
+      error: error.message
+    });
+  }
+}
+
+const getGainerData=async(req,res)=>{
+  try{
+  const data=await getGainerMarketData()
+    console.log(data);
+    
+  res.json(data)
+  }
+  catch(error){
+    res.status(500).json({
+      error: error.message
+    });
+  }
+}
+
+
+export { getMarketData,getLowerData,getGainerData }

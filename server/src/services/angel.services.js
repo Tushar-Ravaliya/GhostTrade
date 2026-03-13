@@ -45,4 +45,25 @@ async function getLTP(exchange, symbol, token) {
   return data;
 }
 
-export { loginAngel, getSession, getLTP };
+async function getLowerMarketData(){
+  const data=await smartApi.gainersLosers({
+    
+    "datatype":"PercPriceLosers", 
+    "expirytype":"NEAR" 
+
+  })
+
+  return data
+}
+async function getGainerMarketData(){
+  const data=await smartApi.gainersLosers({
+    
+    "datatype":"PercPriceGainers", 
+    "expirytype":"NEAR" 
+
+  })
+
+  return data
+}
+
+export { loginAngel, getSession, getLTP,getLowerMarketData,getGainerMarketData };

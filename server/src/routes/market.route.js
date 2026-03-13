@@ -1,8 +1,11 @@
 import { Router } from "express"
-import { getMarketData } from "../controllers/market.controller.js"
+import { getMarketData,getLowerData, getGainerData } from "../controllers/market.controller.js"
 
 const router = Router()
 
 router.get("/market", getMarketData)
+router.post("/lower",getLowerData)
+router.post("/gainer",getGainerData)
+
 
 export default router

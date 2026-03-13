@@ -41,7 +41,6 @@ const getLowerData=async(req,res)=>{
 const getGainerData=async(req,res)=>{
   try{
   const data=await getGainerMarketData()
-    console.log(data);
     
   res.json(data)
   }

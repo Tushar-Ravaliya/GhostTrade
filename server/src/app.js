@@ -16,7 +16,7 @@ app.use(express.static('public'));
 
 app.use(
   cors({
-    origin: process.env.CORS_ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
+    origin:'http://localhost:3000',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

@@ -45,20 +45,12 @@ async function getLTP(exchange, symbol, token) {
   return data;
 }
 
-<<<<<<< HEAD
-async function getLowerMarketData(){
-  const data=await smartApi.gainersLosers({
-    
-    "datatype":"PercPriceLosers", 
-    "expirytype":"NEXT" 
-=======
+ 
 async function getLowerMarketData() {
   const data = await smartApi.gainersLosers({
 
     "datatype": "PercPriceLosers",
-    "expirytype": "NEAR"
->>>>>>> 0cdab94441080a0807ed12c371f0182089fde39e
-
+    "expirytype": "NEXT"
   })
 
 
@@ -74,17 +66,13 @@ async function getGainerMarketData() {
 
   return data
 }
-async function getName(params) {
+async function getName() {
   const data=await smartApi.searchScrip({
     exchange: "NSE", 
     searchscrip: "TATACONSUM"
   })
 
-<<<<<<< HEAD
   return data
 }
 
 export { loginAngel, getSession, getLTP,getLowerMarketData,getGainerMarketData,getName };
-=======
-export { loginAngel, getSession, getLTP, getLowerMarketData, getGainerMarketData };
->>>>>>> 0cdab94441080a0807ed12c371f0182089fde39e

@@ -54,7 +54,7 @@ export default function ProfitStocks() {
                 {/* Top: Logo and Company Info */}
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-12 h-12 rounded-full bg-[#ff0000] flex items-center justify-center text-white text-2xl font-medium shrink-0">
-                    K
+                    {pro.tradingSymbol.charAt(0)}
                   </div>
                   <div className="flex flex-col truncate">
                     <span className="text-lg text-gray-100 tracking-wide truncate">

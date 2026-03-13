@@ -35,7 +35,12 @@ function getSession() {
 }
 
 async function getLTP(exchange, symbol, token) {
-  const data = await smartApi.ltpData(exchange, symbol, token);
+  const data = await smartApi.marketData({
+    mode: "LTP",
+    exchangeTokens: {
+      [exchange]: [token],
+    },
+  });
 
   return data;
 }

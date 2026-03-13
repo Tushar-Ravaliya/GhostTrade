@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 export default function LossStocks() {
   const [low, setLow] = useState([]);
@@ -9,17 +9,11 @@ export default function LossStocks() {
     const getLowData = async () => {
       try {
         const response = await axios.post("http://localhost:8000/api/v1/market/lower");
-
-
         setLow(response.data.data);
-
-        
       } catch (err) {
         console.error(err);
       }
     };
-  
-    
     getLowData();
   }, []);
   return (
@@ -32,17 +26,17 @@ export default function LossStocks() {
       </div>
 
       {/* Grid container */}
-      
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-{
-        low?.length > 0 ? (low.map((lower) => (
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        {
+          low?.length > 0 ? (low.map((lower) => (
             <Link
               to="/StockDatails"
-              className="hover:text-green-500 transition-colors"
+              className="hover:text-red-600 transition-colors"
             >
               <div
                 key={lower.symbolToken}
-                className="border-2 hover:border-green hover:bg-green/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
+                className="border-2 hover:border-red-600 hover:bg-green/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
               >
                 {/* Top: Logo and Company Info */}
                 <div className="flex items-center gap-4 mb-8">
@@ -70,18 +64,18 @@ export default function LossStocks() {
                         INR
                       </span>
                     </div>
-                    <span className="text-sm text-[#00ff00] tracking-wide">
+                    <span className="text-sm text-[#ff0000] tracking-wide">
                       {lower.percentChange}%
                     </span>
                   </div>
                 </div>
               </div>
             </Link>
-))) :
-          <h1>No Low data</h1>
-      }
-          </div>
-        
+          ))) :
+            <h1>No Low data</h1>
+        }
+      </div>
+
     </div>
   );
 }

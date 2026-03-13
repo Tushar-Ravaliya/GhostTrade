@@ -42,7 +42,7 @@ export default function ProfitStocks() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {
-          profit.length > 0 ? (profit.map((pro) => (
+          profit?.length > 0 ? (profit.map((pro) => (
             <Link
               to="/StockDatails"
               className="hover:text-green-500 transition-colors"

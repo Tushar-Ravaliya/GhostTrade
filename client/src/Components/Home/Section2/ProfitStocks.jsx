@@ -20,13 +20,13 @@ export default function ProfitStocks() {
 
         setProfit(response.data.data);
         console.log(profit);
-        
+
       } catch (err) {
         console.error(err);
       }
     };
     console.log(profit);
-    
+
     getProfitData();
   }, []);
   return (
@@ -39,10 +39,10 @@ export default function ProfitStocks() {
       </div>
 
       {/* Grid container */}
-      {
-        profit.length > 0 ? (profit.map((pro) => {
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        {
+          profit.length > 0 ? (profit.map((pro) => (
             <Link
               to="/StockDatails"
               className="hover:text-green-500 transition-colors"
@@ -78,17 +78,18 @@ export default function ProfitStocks() {
                       </span>
                     </div>
                     <span className="text-sm text-[#00ff00] tracking-wide">
-                      {pro.percentChange}
+                      +{pro.percentChange}%
                     </span>
                   </div>
                 </div>
               </div>
             </Link>
+          ))) :
+            <h1>No Profit data</h1>
+        }
+      </div>
 
-          </div>
-        })) :
-          <h1>No Profit data</h1>
-      }
+
     </div>
   );
 }

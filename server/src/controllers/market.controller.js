@@ -1,6 +1,10 @@
 // import { asyncHandler } from '../utils/async-handler';
 // import { ApiResponse } from '../utils/api-response';
+<<<<<<< HEAD
 import { getLTP,getLowerMarketData,getGainerMarketData,getName } from '../services/angel.services.js'
+=======
+import { getLTP, getLowerMarketData, getGainerMarketData } from '../services/angel.services.js'
+>>>>>>> 0cdab94441080a0807ed12c371f0182089fde39e
 
 const getMarketData = async (req, res) => {
 
@@ -24,27 +28,27 @@ const getMarketData = async (req, res) => {
 
 };
 
-const getLowerData=async(req,res)=>{
-  try{
-  const data=await getLowerMarketData()
+const getLowerData = async (req, res) => {
+  try {
+    const data = await getLowerMarketData()
     console.log(data);
-    
-  res.json(data)
+
+    res.json(data)
   }
-  catch(error){
+  catch (error) {
     res.status(500).json({
       error: error.message
     });
   }
 }
 
-const getGainerData=async(req,res)=>{
-  try{
-  const data=await getGainerMarketData()
-    
-  res.json(data)
+const getGainerData = async (req, res) => {
+  try {
+    const data = await getGainerMarketData()
+
+    res.json(data)
   }
-  catch(error){
+  catch (error) {
     res.status(500).json({
       error: error.message
     });
@@ -64,4 +68,8 @@ const getNameData=async(req,res)=>{
   }
 }
 
+<<<<<<< HEAD
 export { getMarketData,getLowerData,getGainerData,getNameData }
+=======
+export { getMarketData, getLowerData, getGainerData }
+>>>>>>> 0cdab94441080a0807ed12c371f0182089fde39e

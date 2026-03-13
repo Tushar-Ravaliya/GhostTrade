@@ -45,22 +45,30 @@ async function getLTP(exchange, symbol, token) {
   return data;
 }
 
+<<<<<<< HEAD
 async function getLowerMarketData(){
   const data=await smartApi.gainersLosers({
     
     "datatype":"PercPriceLosers", 
     "expirytype":"NEXT" 
+=======
+async function getLowerMarketData() {
+  const data = await smartApi.gainersLosers({
+
+    "datatype": "PercPriceLosers",
+    "expirytype": "NEAR"
+>>>>>>> 0cdab94441080a0807ed12c371f0182089fde39e
 
   })
 
 
   return data
 }
-async function getGainerMarketData(){
-  const data=await smartApi.gainersLosers({
-    
-    "datatype":"PercPriceGainers", 
-    "expirytype":"NEAR" 
+async function getGainerMarketData() {
+  const data = await smartApi.gainersLosers({
+
+    "datatype": "PercPriceGainers",
+    "expirytype": "NEAR"
 
   })
 
@@ -72,7 +80,11 @@ async function getName(params) {
     searchscrip: "TATACONSUM"
   })
 
+<<<<<<< HEAD
   return data
 }
 
 export { loginAngel, getSession, getLTP,getLowerMarketData,getGainerMarketData,getName };
+=======
+export { loginAngel, getSession, getLTP, getLowerMarketData, getGainerMarketData };
+>>>>>>> 0cdab94441080a0807ed12c371f0182089fde39e

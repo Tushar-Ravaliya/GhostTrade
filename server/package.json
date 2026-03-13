@@ -8,9 +8,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,css,scss,json,md}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3",
     "nodemon": "^3.1.11",
     "prettier": "3.7.4"
   },

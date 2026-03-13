@@ -45,7 +45,7 @@ export default function LossStocks() {
                   </div>
                   <div className="flex flex-col truncate">
                     <span className="text-lg text-gray-100 tracking-wide truncate">
-                      {lower.tradingSymbol}
+                      {lower.tradingSymbol.replace("28APR26FUT", "")}
                     </span>
                     <span className="text-xs text-[#666666] truncate mt-0.5">
                       Name

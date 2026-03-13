@@ -49,9 +49,10 @@ async function getLowerMarketData(){
   const data=await smartApi.gainersLosers({
     
     "datatype":"PercPriceLosers", 
-    "expirytype":"NEAR" 
+    "expirytype":"NEXT" 
 
   })
+
 
   return data
 }
@@ -65,5 +66,13 @@ async function getGainerMarketData(){
 
   return data
 }
+async function getName(params) {
+  const data=await smartApi.searchScrip({
+    exchange: "NSE", 
+    searchscrip: "TATACONSUM"
+  })
 
-export { loginAngel, getSession, getLTP,getLowerMarketData,getGainerMarketData };
+  return data
+}
+
+export { loginAngel, getSession, getLTP,getLowerMarketData,getGainerMarketData,getName };

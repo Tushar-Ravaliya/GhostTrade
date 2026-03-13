@@ -58,7 +58,7 @@ export default function ProfitStocks() {
                   </div>
                   <div className="flex flex-col truncate">
                     <span className="text-lg text-gray-100 tracking-wide truncate">
-                      {pro.tradingSymbol}
+                      {pro.tradingSymbol.replace("30MAR26FUT", "")}
                     </span>
                     <span className="text-xs text-[#666666] truncate mt-0.5">
                       Name

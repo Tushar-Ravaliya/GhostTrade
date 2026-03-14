@@ -20,9 +20,9 @@ const getMarketData = async (req, res) => {
 };
 
 const getLowerData = async (req, res) => {
+  await sleep(1000);
   try {
     const data = await getLowerMarketData();
-    console.log(data);
 
     res.json(data);
   } catch (error) {
@@ -33,6 +33,7 @@ const getLowerData = async (req, res) => {
 };
 
 const getGainerData = async (req, res) => {
+  await sleep(100);
   try {
     const data = await getGainerMarketData();
 
@@ -56,4 +57,7 @@ const getNameData = async (req, res) => {
   }
 };
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 export { getMarketData, getLowerData, getGainerData, getNameData };

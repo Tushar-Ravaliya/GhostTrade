@@ -1,12 +1,10 @@
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 import { useEffect } from 'react';
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ProfitStocks() {
-
   const [profit, setProfit] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,24 +13,18 @@ export default function ProfitStocks() {
     const getProfitData = async () => {
       setLoading(true);
       try {
-        const response = await axios.post("http://localhost:8000/api/v1/market/gainer");
+        const response = await axios.post('http://localhost:8000/api/v1/market/gainer');
         // Add a fallback || [] so it never becomes undefined
-        console.log(response.data);
-        console.log(response.data.data);
 
         setProfit(response.data.data);
-        console.log(profit);
-
       } catch (err) {
         console.error(err);
-      }finally {
-      setLoading(false);
-    }
+      } finally {
+        setLoading(false);
+      }
     };
-    console.log(profit);
-
     getProfitData();
-  },);
+  }, []);
   return (
     <div className=" bg-black text-white p-6 md:p-10 m-0 font-sans">
       {/* Header section */}
@@ -45,15 +37,11 @@ export default function ProfitStocks() {
       {/* Grid container */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {
-          loading ? (
-        <p className="text-gray-400">Loading market data...</p>
-      ) :
-          profit?.length > 0 ? (profit.map((pro) => (
-            <Link
-              to="/StockDatails"
-              className="hover:text-green-500 transition-colors"
-            >
+        {loading ? (
+          <p className="text-gray-400">Loading market data...</p>
+        ) : profit?.length > 0 ? (
+          profit.map((pro) => (
+            <Link to="/StockDatails" className="hover:text-green-500 transition-colors">
               <div
                 key={pro.symbolToken}
                 className="border-2 hover:border-green hover:bg-green/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
@@ -65,11 +53,9 @@ export default function ProfitStocks() {
                   </div>
                   <div className="flex flex-col truncate">
                     <span className="text-lg text-gray-100 tracking-wide truncate">
-                      {pro.tradingSymbol.replace("30MAR26FUT", "")}
+                      {pro.tradingSymbol.replace('30MAR26FUT', '')}
                     </span>
-                    <span className="text-xs text-[#666666] truncate mt-0.5">
-                      Name
-                    </span>
+                    <span className="text-xs text-[#666666] truncate mt-0.5">Name</span>
                   </div>
                 </div>
 
@@ -80,9 +66,7 @@ export default function ProfitStocks() {
                       <span className="text-base font-medium tracking-wider text-gray-200">
                         {pro.ltp}
                       </span>
-                      <span className="text-[10px] text-gray-500 font-medium">
-                        INR
-                      </span>
+                      <span className="text-[10px] text-gray-500 font-medium">INR</span>
                     </div>
                     <span className="text-sm text-[#00ff00] tracking-wide">
                       +{pro.percentChange}%
@@ -91,12 +75,11 @@ export default function ProfitStocks() {
                 </div>
               </div>
             </Link>
-          ))) :
-            <h1>No Profit data</h1>
-        }
+          ))
+        ) : (
+          <h1>No Profit data</h1>
+        )}
       </div>
-
-
     </div>
   );
 }

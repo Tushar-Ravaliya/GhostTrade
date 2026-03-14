@@ -7,18 +7,20 @@ import { Link } from 'react-router-dom';
 export default function ProfitStocks() {
   const [profit, setProfit] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Move it inside to satisfy the linter
     const getProfitData = async () => {
       setLoading(true);
+      setError(null);
       try {
         const response = await axios.post('http://localhost:8000/api/v1/market/gainer');
-        // Add a fallback || [] so it never becomes undefined
-
-        setProfit(response.data.data);
+        // fallback to [] so state is never undefined/null
+        setProfit(response.data?.data || []);
       } catch (err) {
         console.error(err);
+        setError('Failed to load profit stocks. Please refresh.');
       } finally {
         setLoading(false);
       }
@@ -39,13 +41,16 @@ export default function ProfitStocks() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {loading ? (
           <p className="text-gray-400">Loading market data...</p>
+        ) : error ? (
+          <p className="text-red-400">{error}</p>
         ) : profit?.length > 0 ? (
           profit.map((pro) => (
-            <Link to="/StockDatails" className="hover:text-green-500 transition-colors">
-              <div
-                key={pro.symbolToken}
-                className="border-2 hover:border-green hover:bg-green/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
-              >
+            <Link
+              to="/StockDatails"
+              className="hover:text-green-500 transition-colors"
+              key={pro.symbolToken}
+            >
+              <div className="border-2 hover:border-green hover:bg-green/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200">
                 {/* Top: Logo and Company Info */}
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-12 h-12 rounded-full bg-[#ff0000] flex items-center justify-center text-white text-2xl font-medium shrink-0">

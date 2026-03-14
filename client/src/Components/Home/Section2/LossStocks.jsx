@@ -5,16 +5,20 @@ import { Link } from 'react-router-dom';
 export default function LossStocks() {
   const [low, setLow] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getLowData = async () => {
       setLoading(true);
+      setError(null);
       try {
         const response = await axios.post('http://localhost:8000/api/v1/market/lower');
-        setLow(response.data.data);
+        // fallback to [] so state is never undefined/null
+        setLow(response.data?.data || []);
       } catch (err) {
         console.error(err);
-      }finally {
+        setError('Failed to load loss stocks. Please refresh.');
+      } finally {
         setLoading(false);
       }
     };
@@ -30,17 +34,18 @@ export default function LossStocks() {
       {/* Grid container */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {
-        loading ? (
-        <p className="text-gray-400">Loading market data...</p>
-      ) :
-        low?.length > 0 ? (
+        {loading ? (
+          <p className="text-gray-400">Loading market data...</p>
+        ) : error ? (
+          <p className="text-red-400">{error}</p>
+        ) : low?.length > 0 ? (
           low.map((lower) => (
-            <Link to="/StockDatails" className="hover:text-red-600 transition-colors">
-              <div
-                key={lower.symbolToken}
-                className="border-2 hover:border-red-600 hover:bg-red-500/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200"
-              >
+            <Link
+              to="/StockDatails"
+              className="hover:text-red-600 transition-colors"
+              key={lower.symbolToken}
+            >
+              <div className="border-2 hover:border-red-600 hover:bg-red-500/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200">
                 {/* Top: Logo and Company Info */}
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-12 h-12 rounded-full bg-[#ff0000] flex items-center justify-center text-white text-2xl font-medium shrink-0">
@@ -48,7 +53,7 @@ export default function LossStocks() {
                   </div>
                   <div className="flex flex-col truncate">
                     <span className="text-lg text-gray-100 tracking-wide truncate">
-                      {lower.tradingSymbol.replace("28APR26FUT", "")}
+                      {lower.tradingSymbol.replace('28APR26FUT', '')}
                     </span>
                     <span className="text-xs text-[#666666] truncate mt-0.5">Name</span>
                   </div>

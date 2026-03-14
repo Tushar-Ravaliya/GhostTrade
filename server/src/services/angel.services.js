@@ -27,6 +27,17 @@ async function loginAngel() {
     console.log('Angel One Login Successful');
   } catch (err) {
     console.error('Angel Login Error:', err.message);
+    throw err; // rethrow so callers know login failed
+  }
+}
+
+// Ensures a valid session exists before making any API call.
+// If the startup login silently failed (e.g. TOTP window boundary),
+// this will retry the login automatically.
+async function ensureSession() {
+  if (!sessionData) {
+    console.log('No active session found, attempting re-login...');
+    await loginAngel();
   }
 }
 
@@ -45,34 +56,31 @@ async function getLTP(exchange, symbol, token) {
   return data;
 }
 
- 
-async function getLowerMarketData() {
-  const data = await smartApi.gainersLosers({
 
+async function getLowerMarketData() {
+  await ensureSession();
+  const data = await smartApi.gainersLosers({
     "datatype": "PercPriceLosers",
     "expirytype": "NEXT"
-  })
-
-
-  return data
+  });
+  return data;
 }
-async function getGainerMarketData() {
-  const data = await smartApi.gainersLosers({
 
+async function getGainerMarketData() {
+  await ensureSession();
+  const data = await smartApi.gainersLosers({
     "datatype": "PercPriceGainers",
     "expirytype": "NEAR"
-
-  })
-
-  return data
+  });
+  return data;
 }
 async function getName() {
-  const data=await smartApi.searchScrip({
-    exchange: "NSE", 
+  const data = await smartApi.searchScrip({
+    exchange: "NSE",
     searchscrip: "TATACONSUM"
   })
 
   return data
 }
 
-export { loginAngel, getSession, getLTP,getLowerMarketData,getGainerMarketData,getName };
+export { loginAngel, getSession, getLTP, getLowerMarketData, getGainerMarketData, getName };

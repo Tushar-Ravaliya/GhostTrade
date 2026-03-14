@@ -1,11 +1,39 @@
-import Footer from "../Components/Footer";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Buttons from "../Components/Home/Section1/buttons";
 import Features from "../Components/Home/Section1/Features";
 import HeroText from "../Components/Home/Section1/HeroText";
 import { Shield, Users, Globe } from "lucide-react";
 import ProfitStocks from "../Components/Home/Section2/ProfitStocks";
 import LossStocks from "../Components/Home/Section2/LossStocks";
+
 export default function Home() {
+  const [gainers, setGainers] = useState([]);
+  const [losers, setLosers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchMarketData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const [gainerRes, lossRes] = await Promise.all([
+          axios.post("http://localhost:8000/api/v1/market/gainer"),
+          axios.post("http://localhost:8000/api/v1/market/lower"),
+        ]);
+        setGainers(gainerRes.data?.data || []);
+        setLosers(lossRes.data?.data || []);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load market data. Please refresh.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMarketData();
+  }, []);
+
   const f = [
     {
       icon: <Shield size={80} strokeWidth={3} />,
@@ -25,18 +53,18 @@ export default function Home() {
   ];
 
   return (
-    <div className="text-white ">
+    <div className="text-white">
       <HeroText />
       <Buttons />
       <div className="flex flex-wrap justify-center gap-36 w-full max-w-5xl mx-auto px-8 py-10">
-        {f.map((fe,idx) => (
+        {f.map((fe, idx) => (
           <div key={idx}>
-            <Features  icon={fe.icon} text1={fe.text1} text2={fe.text2} />
+            <Features icon={fe.icon} text1={fe.text1} text2={fe.text2} />
           </div>
         ))}
       </div>
-      <ProfitStocks />
-      <LossStocks />
+      <ProfitStocks data={gainers} loading={loading} error={error} />
+      <LossStocks data={losers} loading={loading} error={error} />
       {/* <Charts /> */}
     </div>
   );

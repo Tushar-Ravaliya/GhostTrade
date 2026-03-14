@@ -1,45 +1,22 @@
 import React from 'react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-export default function LossStocks() {
-  const [low, setLow] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const getLowData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await axios.post('http://localhost:8000/api/v1/market/lower');
-        // fallback to [] so state is never undefined/null
-        setLow(response.data?.data || []);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load loss stocks. Please refresh.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    getLowData();
-  }, []);
+export default function LossStocks({ data = [], loading, error }) {
   return (
-    <div className=" bg-black text-white p-6 md:p-10 m-0 font-sans">
+    <div className="bg-black text-white p-6 md:p-10 m-0 font-sans">
       {/* Header section */}
       <div className="flex items-center gap-3 mb-8">
         <h1 className="text-3xl md:text-4xl font-medium tracking-wide text-gray-50">Loss Stocks</h1>
       </div>
 
       {/* Grid container */}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {loading ? (
           <p className="text-gray-400">Loading market data...</p>
         ) : error ? (
           <p className="text-red-400">{error}</p>
-        ) : low?.length > 0 ? (
-          low.map((lower) => (
+        ) : data.length > 0 ? (
+          data.map((lower) => (
             <Link
               to="/StockDatails"
               className="hover:text-red-600 transition-colors"

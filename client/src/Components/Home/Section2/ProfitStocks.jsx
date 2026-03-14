@@ -8,10 +8,12 @@ import { Link } from "react-router-dom";
 export default function ProfitStocks() {
 
   const [profit, setProfit] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Move it inside to satisfy the linter
     const getProfitData = async () => {
+      setLoading(true);
       try {
         const response = await axios.post("http://localhost:8000/api/v1/market/gainer");
         // Add a fallback || [] so it never becomes undefined
@@ -23,12 +25,14 @@ export default function ProfitStocks() {
 
       } catch (err) {
         console.error(err);
-      }
+      }finally {
+      setLoading(false);
+    }
     };
     console.log(profit);
 
     getProfitData();
-  }, []);
+  },);
   return (
     <div className=" bg-black text-white p-6 md:p-10 m-0 font-sans">
       {/* Header section */}
@@ -42,6 +46,9 @@ export default function ProfitStocks() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {
+          loading ? (
+        <p className="text-gray-400">Loading market data...</p>
+      ) :
           profit?.length > 0 ? (profit.map((pro) => (
             <Link
               to="/StockDatails"

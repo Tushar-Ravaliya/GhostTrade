@@ -4,14 +4,18 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 export default function LossStocks() {
   const [low, setLow] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getLowData = async () => {
+      setLoading(true);
       try {
         const response = await axios.post('http://localhost:8000/api/v1/market/lower');
         setLow(response.data.data);
       } catch (err) {
         console.error(err);
+      }finally {
+        setLoading(false);
       }
     };
     getLowData();
@@ -26,7 +30,11 @@ export default function LossStocks() {
       {/* Grid container */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {low?.length > 0 ? (
+        {
+        loading ? (
+        <p className="text-gray-400">Loading market data...</p>
+      ) :
+        low?.length > 0 ? (
           low.map((lower) => (
             <Link to="/StockDatails" className="hover:text-red-600 transition-colors">
               <div

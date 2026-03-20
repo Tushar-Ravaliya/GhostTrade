@@ -2,8 +2,7 @@ import smartApi from '../config/angel.config.js';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { authenticator } = require('otplib');
-import {WebSocketV2} from "smartapi-javascript"
-
+import { WebSocketV2 } from 'smartapi-javascript';
 
 let sessionData = null;
 
@@ -16,16 +15,18 @@ async function initializeRealTimeFeed(onTickCallback) {
     jwttoken: sessionData.jwtToken,
     apikey: process.env.SMART_API_KEY,
     clientcode: process.env.ANGEL_CLIENT_CODE,
-    feedtype: sessionData.feedToken
+    feedtype: sessionData.feedToken,
   });
 
-  ws.connect().then(() => {
-      console.log("Available methods:", Object.keys(ws));
-  }).catch((err) => {
-      console.error("❌ Connection failed:", err);
-  });
+  ws.connect()
+    .then(() => {
+      console.log('Available methods:', Object.keys(ws));
+    })
+    .catch((err) => {
+      console.error('❌ Connection failed:', err);
+    });
 
-  ws.on("tick", (data) => {
+  ws.on('tick', (data) => {
     if (onTickCallback) onTickCallback(data);
   });
 }
@@ -70,7 +71,7 @@ function getSession() {
 
 async function getLTP(exchange, symbol, token) {
   const data = await smartApi.marketData({
-    mode: "LTP",
+    mode: 'LTP',
     exchangeTokens: {
       [exchange]: [token],
     },
@@ -79,12 +80,11 @@ async function getLTP(exchange, symbol, token) {
   return data;
 }
 
-
 async function getLowerMarketData() {
   await ensureSession();
   const data = await smartApi.gainersLosers({
-    "datatype": "PercPriceLosers",
-    "expirytype": "NEXT"
+    datatype: 'PercPriceLosers',
+    expirytype: 'NEXT',
   });
   return data;
 }
@@ -92,37 +92,46 @@ async function getLowerMarketData() {
 async function getGainerMarketData() {
   await ensureSession();
   const data = await smartApi.gainersLosers({
-    "datatype": "PercPriceGainers",
-    "expirytype": "NEAR"
+    datatype: 'PercPriceGainers',
+    expirytype: 'NEAR',
   });
   return data;
 }
 async function getName() {
   const data = await smartApi.searchScrip({
-    exchange: "NSE",
-    searchscrip: "TATACONSUM"
-  })
+    exchange: 'NSE',
+    searchscrip: 'TATACONSUM',
+  });
 
-  return data
+  return data;
 }
 
 function subscribeToStocks(tokens, exchangeType = 1) {
   if (!ws) {
-    console.error("❌ WebSocket not initialized. Cannot subscribe.");
+    console.error('❌ WebSocket not initialized. Cannot subscribe.');
     return;
   }
 
   const json_req = {
-    correlationId: "home_page_watch",
+    correlationId: 'home_page_watch',
     action: 1, // 1 = Subscribe
-    mode: 1,   // 1 = LTP
+    mode: 1, // 1 = LTP
     exchangeType: exchangeType, // 1 = NSE
-    tokens: tokens.map(t => String(t)) // Array of strings: ["3045", "99926000"]
+    tokens: tokens.map((t) => String(t)), // Array of strings: ["3045", "99926000"]
   };
 
-  console.log("Sending subscription for:", json_req.tokens);
+  console.log('Sending subscription for:', json_req.tokens);
   ws.fetchData(json_req);
   console.log(`📡 Subscribed to ${tokens.length} stocks for live updates`);
 }
 
-export { loginAngel, getSession, getLTP, getLowerMarketData, getGainerMarketData, getName,initializeRealTimeFeed,subscribeToStocks };
+export {
+  loginAngel,
+  getSession,
+  getLTP,
+  getLowerMarketData,
+  getGainerMarketData,
+  getName,
+  initializeRealTimeFeed,
+  subscribeToStocks,
+};

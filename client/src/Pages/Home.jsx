@@ -45,7 +45,8 @@ export default function Home() {
 
       const updateList = (prevList) =>
         prevList.map((stock) => {
-
+          console.log("RAW TICK:", tick);
+          
           // Match the incoming tick to the stock in our list using token
           if (stock.symbolToken === tick.token || stock.token === tick.token) {
             const newLtp = (tick.last_traded_price || tick.ltp);

@@ -53,8 +53,7 @@ export default function Navbar() {
               alt="Profile"
             />
           </button>
-
-
+          
           {isProfileOpen && (
             <div className="absolute right-0 top-14 w-48 bg-black border border-gray-800 rounded-lg shadow-xl py-2">
               <Link to="/profile" className="flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-white/10 hover:text-green transition-colors" onClick={() => setIsProfileOpen(false)}>

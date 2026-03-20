@@ -5,6 +5,7 @@ import {
   getLowerMarketData,
   getGainerMarketData,
   getName,
+  subscribeToStocks
 } from '../services/angel.services.js';
 
 const getMarketData = async (req, res) => {
@@ -22,9 +23,17 @@ const getMarketData = async (req, res) => {
 const getLowerData = async (req, res) => {
   await sleep(1000);
   try {
-    const data = await getLowerMarketData();
+    const response = await getLowerMarketData();
 
-    res.json(data);
+    const tokens = response.data.map(stock => stock.symbolToken);
+
+    
+    subscribeToStocks(tokens);
+
+    res.json({
+      success: true,
+      data: response.data 
+    });
   } catch (error) {
     res.status(500).json({
       error: error.message,

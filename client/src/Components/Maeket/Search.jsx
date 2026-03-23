@@ -10,7 +10,7 @@ export default function Search() {
   }
 
   return (
-    <div className="w-full min-h-[400px] bg-black flex flex-col items-center justify-center p-6 space-y-6 font-sans">
+    <div className="w-full min-h-100 bg-black flex flex-col items-center justify-center p-6 space-y-6 font-sans">
       
       {/* Logo Section */}
       {/* Note: To get the exact distressed look, apply your custom font family class here */}
@@ -29,7 +29,7 @@ export default function Search() {
       </p>
 
       {/* Search Input Container */}
-      <div className="flex items-center w-full max-w-[600px] bg-white rounded-xl px-4 py-3 md:py-4 transition-shadow focus-within:ring-3 focus-within:ring-green/80">
+      <div className="flex items-center w-full max-w-150   bg-white rounded-xl px-4 py-3 md:py-4 transition-shadow focus-within:ring-3 focus-within:ring-green/80">
         
         {/* Search Icon */}
         <svg 

@@ -169,7 +169,7 @@ export default function Card() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="border-2 border-gray-700 rounded-2xl p-6 hover:border-gray-500 transition-colors duration-300 bg-black"
+              className="border-2 border-gray-700 rounded-2xl p-6 hover:border-gray-500  duration-300 bg-black hover:translate-y-0.5 transition-all"
             >
               {/* Card Header: Icon & Badge */}
               <div className="flex justify-between items-start mb-6">

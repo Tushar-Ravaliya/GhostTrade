@@ -1,8 +1,7 @@
 import React from "react";
 
 const Features = (props) => {
-  console.log(props);
-  
+
   return (
     <div className="bg-black font-sans flex flex-col items-center">
       <div className="flex items-center justify-center w-28 h-28 mb-3 bg-white text-black rounded-full">

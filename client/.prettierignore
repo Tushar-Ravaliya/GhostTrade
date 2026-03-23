@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Environment files
+.env
+.env.*
+
+# Package manager locks (optional — remove if you want these formatted)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Auto-generated files
+src/generated/
+*.min.js
+*.min.css
+
+# Static assets
+public/
+coverage/
+
+# Misc
+*.log
+.DS_Store

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import axios from 'axios';
 
 const router = Router();
-router.get('/api/stocks/:symbol', async (req, res) => {
+router.get('/timeseries/:symbol', async (req, res) => {
   try {
     const symbol = req.params.symbol;
     const response = await axios.get(`https://api.twelvedata.com/time_series`, {

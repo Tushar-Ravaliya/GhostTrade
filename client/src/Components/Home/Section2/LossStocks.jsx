@@ -6,7 +6,9 @@ export default function LossStocks({ data = [], loading, error }) {
     <div className="bg-black text-white p-6 md:p-10 m-0 font-sans">
       {/* Header section */}
       <div className="flex items-center gap-3 mb-8">
-        <h1 className="text-3xl md:text-4xl font-medium tracking-wide text-gray-50">Loss Stocks</h1>
+        <h1 className="text-3xl md:text-4xl font-medium tracking-wide text-gray-50">
+          Loss Stocks
+        </h1>
       </div>
 
       {/* Grid container */}
@@ -16,23 +18,25 @@ export default function LossStocks({ data = [], loading, error }) {
         ) : error ? (
           <p className="text-red-400">{error}</p>
         ) : data.length > 0 ? (
-          data.map((lower) => (
+          data.map((stock) => (
             <Link
               to="/StockDatails"
               className="hover:text-red-600 transition-colors"
-              key={lower.symbolToken}
+              key={stock.symbol}
             >
               <div className="border-2 hover:border-red-600 hover:bg-red-500/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200">
                 {/* Top: Logo and Company Info */}
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-12 h-12 rounded-full bg-[#ff0000] flex items-center justify-center text-white text-2xl font-medium shrink-0">
-                    {lower.tradingSymbol.charAt(0)}
+                    {stock.symbol.charAt(0)}
                   </div>
                   <div className="flex flex-col truncate">
                     <span className="text-lg text-gray-100 tracking-wide truncate">
-                      {lower.tradingSymbol.replace('28APR26FUT', '')}
+                      {stock.symbol}
                     </span>
-                    <span className="text-xs text-[#666666] truncate mt-0.5">Name</span>
+                    <span className="text-xs text-[#666666] truncate mt-0.5">
+                      {stock.name}
+                    </span>
                   </div>
                 </div>
 
@@ -41,12 +45,12 @@ export default function LossStocks({ data = [], loading, error }) {
                   <div>
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-base font-medium tracking-wider text-gray-200">
-                        {lower.ltp}
+                        {stock.close}
                       </span>
-                      <span className="text-[10px] text-gray-500 font-medium">INR</span>
+                      <span className="text-[10px] text-gray-500 font-medium">USD</span>
                     </div>
                     <span className="text-sm text-[#ff0000] tracking-wide">
-                      {lower.percentChange}%
+                      {stock.percent_change}%
                     </span>
                   </div>
                 </div>
@@ -54,7 +58,7 @@ export default function LossStocks({ data = [], loading, error }) {
             </Link>
           ))
         ) : (
-          <h1>No Low data</h1>
+          <h1>No Loss data</h1>
         )}
       </div>
     </div>

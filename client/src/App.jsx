@@ -1,17 +1,16 @@
 import React from "react";
-import Login from "./Pages/login";
-import Home from "./Pages/Home";
+import Login from "./pages/login";
+import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
-import Market from "./Pages/Market";
-import AboutUs from "./Pages/AboutUs";
-import Portfolio from "./Pages/Portfolio";
-import Profile from "./Pages/Profile";
-import History from "./Pages/History";
-import Register from "./Pages/Register";
-import NotFound from "./Pages/NotFound";
-import StockDetails from "./Pages/StockDetails";
+import Market from "./pages/Market";
+import AboutUs from "./pages/AboutUs";
+import Portfolio from "./pages/Portfolio";
+import Profile from "./pages/Profile";
+import History from "./pages/History";
+import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
+import StockDetails from "./pages/StockDetails";
 import Layout from "./Layout";
-import Twelvedata from "./pages/Twelvedata.jsx";
 
 export default function App() {
   return (
@@ -20,7 +19,6 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/test" element={<Twelvedata />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -36,3 +34,4 @@ export default function App() {
     </>
   );
 }
+

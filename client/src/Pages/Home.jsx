@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { io } from 'socket.io-client'
+import { io } from "socket.io-client";
 import Buttons from "../Components/Home/Section1/buttons";
 import Features from "../Components/Home/Section1/Features";
 import HeroText from "../Components/Home/Section1/HeroText";
@@ -38,27 +38,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // 3. Listen for the 'market-update' event you defined in index.js
-    socket.on("market-update", (tick) => {
-
-      console.log(tick);
-
+    const handleMarketUpdate = (tick) => {
       const updateList = (prevList) =>
         prevList.map((stock) => {
-          console.log("RAW TICK:", tick);
-          
           // Match the incoming tick to the stock in our list using token
           if (stock.symbolToken === tick.token || stock.token === tick.token) {
-            const newLtp = (tick.last_traded_price || tick.ltp);
+            const newLtp = tick.last_traded_price || tick.ltp;
             const newNetChange = tick.net_Change;
             const newPercentChange = tick.percent_Change;
 
             return {
               ...stock,
-              // Use a fallback to current stock value if tick value is missing to avoid NaN
-              ltp: newLtp ? (newLtp / 100) : stock.ltp,
+              ltp: newLtp ? newLtp / 100 : stock.ltp,
               netChange: newNetChange !== undefined ? newNetChange : stock.netChange,
-              percentChange: newPercentChange !== undefined ? newPercentChange : stock.percentChange,
+              percentChange:
+                newPercentChange !== undefined ? newPercentChange : stock.percentChange,
             };
           }
           return stock;
@@ -66,9 +60,17 @@ export default function Home() {
 
       setGainers((prev) => updateList(prev));
       setLosers((prev) => updateList(prev));
-    });
+    };
 
+    socket.on("market-update", handleMarketUpdate);
+
+    // Clean up listener on unmount / re-render to prevent stacking duplicates
+    return () => {
+      socket.off("market-update", handleMarketUpdate);
+    };
   }, []);
+  console.log("Updated Gainers:", gainers);
+  // console.log("Updated Losers:", losers);
 
   const f = [
     {

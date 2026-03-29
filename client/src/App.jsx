@@ -11,6 +11,7 @@ import Register from "./Pages/Register";
 import NotFound from "./Pages/NotFound";
 import StockDetails from "./Pages/StockDetails";
 import Layout from "./Layout";
+import Twelvedata from "./pages/Twelvedata.jsx";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/test" element={<Twelvedata />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Home />} />

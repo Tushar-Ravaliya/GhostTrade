@@ -1,6 +1,59 @@
+import { useState } from "react";
 import Image from "../Components/LoginPage/Image";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 export default function Register() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    mobileNo: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { confirmPassword, ...registerData } = formData;
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/auth/register",
+        registerData,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+
+
+      if (response.data.statusCode === 201) {
+        console.log("Registration successful:", response.data.message);
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      setError(err.response?.data?.message || "An error occurred during registration");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="bg-[url(/Images/background-image.jpeg)] bg-cover bg-center fixed inset-0 blur-sm z-0"></div>
@@ -12,29 +65,61 @@ export default function Register() {
                 Register Here
               </h1>
               <p className="text-center lg:text-left">Welcome to paper trading Website</p>
-              <input
-                type="text"
-                className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                placeholder="Name"
-              />
-              <input
-                type="text"
-                className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                placeholder="Email"
-              />
-              <input
-                type="password"
-                className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                placeholder="Password"
-              />
-              <input
-                type="password"
-                className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                placeholder="Confirm Password"
-              />
-              <button className="bg-blue-700 hover:bg-blue-600 transition-colors rounded-2xl w-full px-4 py-2.5">
-                Register
-              </button>
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
+                  placeholder="Name"
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
+                  placeholder="Email"
+                  required
+                />
+                <input
+                  type="text"
+                  name="mobileNo"
+                  value={formData.mobileNo}
+                  onChange={handleChange}
+                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
+                  placeholder="Mobile Number"
+                  required
+                />
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
+                  placeholder="Password"
+                  required
+                />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
+                  placeholder="Confirm Password"
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-700 hover:bg-blue-600 transition-colors rounded-2xl w-full px-4 py-2.5 disabled:opacity-50"
+                >
+                  {loading ? "Registering..." : "Register"}
+                </button>
+              </form>
               <div className="flex justify-between">
                 <p className="text-xs sm:text-sm">I have an Account</p>
                 <NavLink
@@ -45,13 +130,7 @@ export default function Register() {
                 </NavLink>
               </div>
             </div>
-            <div
-              className="w-full lg:w-1/2 rounded-xl min-h-55 sm:min-h-75 lg:min-h-105 flex items-center justify-center"
-              // style={{
-              //   transform: "skewX(-10deg)", // Skew creates the slant
-              //   left: "-50%", // Adjust position to hide the left-side skew
-              // }}
-            >
+            <div className="w-full lg:w-1/2 rounded-xl min-h-55 sm:min-h-75 lg:min-h-105 flex items-center justify-center">
               <Image />
             </div>
           </div>

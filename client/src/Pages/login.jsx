@@ -1,6 +1,55 @@
+import { useState } from "react";
 import Image from "../Components/LoginPage/Image";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 export default function Login() {
+  const [formData, setFormData] = useState({
+    identifier: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      // Determine if it's an email or mobile number
+      const isEmail = formData.identifier.includes("@");
+      const loginData = {
+        password: formData.password,
+        [isEmail ? "email" : "mobileNo"]: formData.identifier,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/auth/login",
+        loginData,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.statusCode === 200) {
+        // Handle successful login (e.g., store user info, redirect)
+        console.log("Login successful:", response.data.message);
+        navigate("/"); // Redirect to home page
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "An error occurred during login");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="bg-[url(/Images/background-image.jpeg)] bg-cover bg-center fixed inset-0 blur-sm z-0"></div>
@@ -12,20 +61,35 @@ export default function Login() {
                 Login Here
               </h1>
               <p className="text-center lg:text-left">Welcome to paper trading Website</p>
-              <input
-                type="text"
-                className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                placeholder="Email"
-              />
-              <input
-                type="password"
-                className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                placeholder="Password"
-              />
-              <p className="text-sm text-right">Forgot Password</p>
-              <button className="bg-blue-700 hover:bg-blue-600 transition-colors rounded-2xl w-full px-4 py-2.5">
-                Login
-              </button>
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <input
+                  type="text"
+                  name="identifier"
+                  value={formData.identifier}
+                  onChange={handleChange}
+                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
+                  placeholder="Email or Mobile Number"
+                  required
+                />
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
+                  placeholder="Password"
+                  required
+                />
+                <p className="text-sm text-right cursor-pointer">Forgot Password</p>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-700 hover:bg-blue-600 transition-colors rounded-2xl w-full px-4 py-2.5 disabled:opacity-50"
+                >
+                  {loading ? "Logging in..." : "Login"}
+                </button>
+              </form>
               <div className="flex justify-between">
                 <p className="text-xs sm:text-sm">I don't have an Account</p>
                 <NavLink
@@ -36,13 +100,7 @@ export default function Login() {
                 </NavLink>
               </div>
             </div>
-            <div
-              className="w-full lg:w-1/2 rounded-xl min-h-55 sm:min-h-75 lg:min-h-105 flex items-center justify-center"
-              // style={{
-              //   transform: "skewX(-10deg)", // Skew creates the slant
-              //   left: "-50%", // Adjust position to hide the left-side skew
-              // }}
-            >
+            <div className="w-full lg:w-1/2 rounded-xl min-h-55 sm:min-h-75 lg:min-h-105 flex items-center justify-center">
               <Image />
             </div>
           </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "../Components/LoginPage/Image";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuthStore from "../store/useAuthStore";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,8 +41,6 @@ export default function Register() {
           withCredentials: true,
         }
       );
-      console.log(response);
-
 
       if (response.data.statusCode === 201) {
         console.log("Registration successful:", response.data.message);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "../Components/LoginPage/Image";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuthStore from "../store/useAuthStore";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,9 +40,8 @@ export default function Login() {
       );
 
       if (response.data.statusCode === 200) {
-        // Handle successful login (e.g., store user info, redirect)
-        console.log("Login successful:", response.data.message);
-        navigate("/"); // Redirect to home page
+        setUser(response.data.data.user);
+        navigate("/");
       }
     } catch (err) {
       console.error("Login error:", err);

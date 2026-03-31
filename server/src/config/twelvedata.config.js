@@ -1,14 +1,10 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config({
-  path: './../.env',
-});
+import config from './config.js';
 
 const twelveDataClient = axios.create({
   baseURL: 'https://api.twelvedata.com',
   params: {
-    apikey: process.env.TWELVE_DATA_API_KEY,
+    apikey: config.twelveDataApiKey,
   },
 });
 

@@ -27,10 +27,15 @@ const userSchema = new Schema(
       required: true,
     },
 
+    profilePhoto: {
+      type: String,
+      default: '',
+    },
+
     status: {
       type: String,
       enum: ['active', 'inactive', 'deleted', 'banned'],
-      default: 'inactive',
+      default: 'active',
     },
 
     // refreshToken: {

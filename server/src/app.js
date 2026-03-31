@@ -1,17 +1,16 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import market from './routes/market.route.js'
 import auth from './routes/auth.routes.js'
+import user from './routes/user.routes.js'
 
-dotenv.config({
-  path: './../.env',
-});
+import config from './config/config.js';
+
 const app = express();
 
-app.use(express.json({ limit: '16kb' }));
-app.use(express.urlencoded({ extended: true, limit: '16kb' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('public'));
 app.use(cookieParser());
 
@@ -27,5 +26,6 @@ app.use(
 
 app.use('/api/v1/market', market)
 app.use('/api/v1/auth', auth)
+app.use('/api/v1/user', user)
 
 export default app;

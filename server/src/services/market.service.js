@@ -1,7 +1,7 @@
 import twelveDataClient from '../config/twelvedata.config.js';
 
 // Default watchlist — free tier supports up to 8 symbols per request
-const WATCHLIST = 'AAPL,TSLA,NVDA,MSFT,AMZN,META,AMD,GOOGL';
+const WATCHLIST = 'TSLA,NVDA,MSFT,AMZN,META,GOOGL';
 
 /**
  * Fetch time-series (daily close) for a single symbol.

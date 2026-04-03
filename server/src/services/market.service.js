@@ -48,3 +48,21 @@ export const getMarketMovers = async () => {
 
   return { gainers, losers };
 };
+
+/**
+ * Fetch quote for a single symbol.
+ * Returns the raw TwelveData quote response.
+ */
+export const getStockQuote = async (symbol) => {
+  const { data } = await twelveDataClient.get('/quote', {
+    params: { symbol },
+  });
+
+  if (data.status === 'error') {
+    const err = new Error(data.message || 'TwelveData API error');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  return data;
+};

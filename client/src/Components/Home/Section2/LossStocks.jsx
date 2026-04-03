@@ -20,7 +20,7 @@ export default function LossStocks({ data = [], loading, error }) {
         ) : data.length > 0 ? (
           data.map((stock) => (
             <Link
-              to="/StockDatails"
+              to={`/stock/${stock.symbol}`}
               className="hover:text-red-600 transition-colors"
               key={stock.symbol}
             >

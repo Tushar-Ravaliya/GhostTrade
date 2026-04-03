@@ -26,3 +26,17 @@ export const getMarketMovers = async (req, res) => {
     res.status(status).json({ message: error.message || 'Server error fetching market movers' });
   }
 };
+
+/**
+ * GET /quote/:symbol
+ */
+export const getStockQuote = async (req, res) => {
+  try {
+    const { symbol } = req.params;
+    const data = await marketService.getStockQuote(symbol);
+    res.json(data);
+  } catch (error) {
+    const status = error.statusCode || 500;
+    res.status(status).json({ message: error.message || 'Server error fetching stock quote' });
+  }
+};

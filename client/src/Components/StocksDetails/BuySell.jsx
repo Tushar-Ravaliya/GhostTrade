@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
-const BuySell = () => {
+const BuySell = ({ symbol, stockData }) => {
   const [tradeType, setTradeType] = useState("buy");
+  const [quantity, setQuantity] = useState(1);
+
+  const marketPrice = stockData?.close ? parseFloat(stockData.close) : 0;
+  const estimatedTotal = useMemo(() => (quantity * marketPrice).toFixed(2), [quantity, marketPrice]);
 
   return (
     <div className="px-20 py-8">
@@ -36,7 +40,7 @@ const BuySell = () => {
             Market Price
           </h3>
           <span className="text-white text-xl md:text-2xl font-bold">
-            ₹4250
+            ${marketPrice.toLocaleString()}
           </span>
         </div>
 
@@ -48,7 +52,9 @@ const BuySell = () => {
             </label>
             <input
               type="number"
-              defaultValue="1"
+              value={quantity}
+              min="1"
+              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
               className="bg-black border border-gray-600 rounded-md p-3 text-white focus:outline-none focus:border-green-500 transition-colors"
             />
           </div>
@@ -58,7 +64,7 @@ const BuySell = () => {
             </label>
             <input
               type="number"
-              defaultValue="4250"
+              defaultValue={marketPrice}
               className="bg-black border border-gray-600 rounded-md p-3 text-white focus:outline-none focus:border-green-500 transition-colors"
             />
           </div>
@@ -73,17 +79,21 @@ const BuySell = () => {
             <span className="text-white text-lg font-bold">
               Estimated Total
             </span>
-            <span className="text-white text-lg font-bold">₹4250</span>
+            <span className="text-white text-lg font-bold">${estimatedTotal}</span>
           </div>
           <div className="flex justify-between items-center px-2">
-            <span className="text-white text-lg font-bold">Balance</span>
-            <span className="text-white text-lg font-bold">₹99,905</span>
+            <span className="text-white text-lg font-bold">Symbol</span>
+            <span className="text-white text-lg font-bold">{symbol}</span>
           </div>
         </div>
 
         {/* Action Button */}
-        <button className="w-full bg-white text-green-700 py-3 rounded-md font-extrabold text-xl hover:bg-gray-100 transition-colors">
-          Place {tradeType === "buy" ? "Buy" : "Sell"} Order
+        <button className={`w-full py-3 rounded-md font-extrabold text-xl transition-colors ${
+          tradeType === "buy"
+            ? "bg-white text-green-700 hover:bg-gray-100"
+            : "bg-white text-red-600 hover:bg-gray-100"
+        }`}>
+          Place {tradeType === "buy" ? "Buy" : "Sell"} Order — {symbol}
         </button>
       </div>
     </div>

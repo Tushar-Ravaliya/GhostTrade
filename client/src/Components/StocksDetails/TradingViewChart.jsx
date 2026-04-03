@@ -1,41 +1,47 @@
 import React, { useEffect, useRef, memo } from 'react';
 
-function TradingViewChart() {
+function TradingViewChart({ symbol = "AAPL" }) {
   const container = useRef();
 
-  useEffect(
-    () => {
-      const script = document.createElement("script");
-      script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-      script.type = "text/javascript";
-      script.async = true;
-      script.innerHTML = JSON.stringify({
-        "autosize": true,
-        "symbol": "BINANCE:BTCUSDT", // You can make this dynamic via props
-        "interval": "D",
-        "timezone": "Etc/UTC",
-        "theme": "dark", // Or "light"
-        "style": "1",
-        "locale": "en",
-        "enable_publishing": false,
-        "allow_symbol_change": true,
-        "calendar": false,
-        "support_host": "https://www.tradingview.com"
-      });
-      container.current.appendChild(script);
-    },
-    []
-  );
+  useEffect(() => {
+    // Clear previous widget when symbol changes
+    if (container.current) {
+      container.current.innerHTML = '';
+    }
+
+    const widgetContainer = document.createElement('div');
+    widgetContainer.className = 'tradingview-widget-container__widget';
+    widgetContainer.style.height = 'calc(100% - 32px)';
+    widgetContainer.style.width = '100%';
+    container.current.appendChild(widgetContainer);
+
+    const script = document.createElement("script");
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+    script.type = "text/javascript";
+    script.async = true;
+    script.innerHTML = JSON.stringify({
+      "autosize": true,
+      "symbol": symbol,
+      "interval": "D",
+      "timezone": "Etc/UTC",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "enable_publishing": false,
+      "allow_symbol_change": true,
+      "calendar": false,
+      "support_host": "https://www.tradingview.com"
+    });
+    container.current.appendChild(script);
+  }, [symbol]);
 
   return (
-    // Tailwind classes used for layout and height
     <div className="flex flex-col h-[70vh] w-full p-4 bg-white/10 rounded-sm">
-      <div 
-        className="tradingview-widget-container border border-slate-700 rounded-lg overflow-hidden" 
-        ref={container} 
+      <div
+        className="tradingview-widget-container border border-slate-700 rounded-lg overflow-hidden"
+        ref={container}
         style={{ height: "100%", width: "100%" }}
       >
-        <div className="tradingview-widget-container__widget" style={{ height: "calc(100% - 32px)", width: "100%" }}></div>
       </div>
     </div>
   );

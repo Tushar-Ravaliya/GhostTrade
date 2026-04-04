@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import market from './routes/market.route.js'
 import auth from './routes/auth.routes.js'
 import user from './routes/user.routes.js'
+import trade from './routes/trade.routes.js'
 
 import config from './config/config.js';
 
@@ -27,5 +28,6 @@ app.use(
 app.use('/api/v1/market', market)
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/user', user)
+app.use('/api/v1/trade', trade)
 
 export default app;

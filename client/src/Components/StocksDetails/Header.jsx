@@ -35,7 +35,7 @@ const Header = ({ symbol, stockData, loading }) => {
             ) : (
               <>
                 <span className="text-white text-2xl md:text-3xl font-semibold">
-                  {price}
+                  {Number(price).toFixed(2)}
                 </span>
 
                 <span className="text-[10px] md:text-xs text-gray-400 uppercase font-medium">
@@ -43,7 +43,7 @@ const Header = ({ symbol, stockData, loading }) => {
                 </span>
 
                 <span className={`text-sm md:text-[15px] font-medium ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
-                  {isPositive ? '+' : ''}{percentChange}%
+                  {isPositive ? '+' : ''}{percentChange.toFixed(2)}%
                 </span>
               </>
             )}

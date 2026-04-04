@@ -45,12 +45,12 @@ export default function ProfitStocks({ data = [], loading, error }) {
                   <div>
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-base font-medium tracking-wider text-gray-200">
-                        {stock.close}
+                        {Number(stock.close).toFixed(2)}
                       </span>
                       <span className="text-[10px] text-gray-500 font-medium">USD</span>
                     </div>
                     <span className="text-sm text-[#00ff00] tracking-wide">
-                      +{stock.percent_change}%
+                      +{Number(stock.percent_change).toFixed(2)}%
                     </span>
                   </div>
                 </div>

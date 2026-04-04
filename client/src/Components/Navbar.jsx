@@ -35,7 +35,7 @@ export default function Navbar() {
       <div className="flex justify-between items-center px-6 md:px-8 py-4">
 
         <div className="flex items-center gap-3">
-          <img className="rounded-full h-10 w-10 md:h-12 md:w-12 object-cover" src="Images/Logo1.jpeg" alt="Logo" />
+          <img className="rounded-full h-10 w-10 md:h-12 md:w-12 object-cover" src="/Images/Logo1.jpeg" alt="Logo" />
           <p className="text-white font-bold text-xl md:text-2xl">
             Ghost <span className="text-green-700">Trade</span>
           </p>

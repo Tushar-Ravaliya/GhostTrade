@@ -40,3 +40,20 @@ export const getStockQuote = async (req, res) => {
     res.status(status).json({ message: error.message || 'Server error fetching stock quote' });
   }
 };
+
+/**
+ * GET /search?q=AAPL
+ */
+export const searchSymbol = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q || q.trim().length === 0) {
+      return res.json({ data: [] });
+    }
+    const data = await marketService.searchSymbol(q.trim());
+    res.json(data);
+  } catch (error) {
+    const status = error.statusCode || 500;
+    res.status(status).json({ message: error.message || 'Server error searching symbols' });
+  }
+};

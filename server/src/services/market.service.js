@@ -66,3 +66,21 @@ export const getStockQuote = async (symbol) => {
 
   return data;
 };
+
+/**
+ * Search symbols using TwelveData /symbol_search endpoint.
+ * Returns an array of matching instruments.
+ */
+export const searchSymbol = async (query) => {
+  const { data } = await twelveDataClient.get('/symbol_search', {
+    params: { symbol: query, outputsize: 10 },
+  });
+
+  if (data.status === 'error') {
+    const err = new Error(data.message || 'TwelveData API error');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  return data;
+};

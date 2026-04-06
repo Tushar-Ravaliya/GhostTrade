@@ -1,4 +1,5 @@
 import twelveDataClient from '../config/twelvedata.config.js';
+import twelveDataClient2 from '../config/twelvedata2.config.js';
 
 // Default watchlist — free tier supports up to 8 symbols per request
 const WATCHLIST = 'TSLA,NVDA,MSFT,AMZN,META,GOOGL';
@@ -90,7 +91,7 @@ export const searchSymbol = async (query) => {
  * Returns { symbol, url }.
  */
 export const getStockLogo = async (symbol) => {
-  const { data } = await twelveDataClient.get('/logo', {
+  const { data } = await twelveDataClient2.get('/logo', {
     params: { symbol },
   });
 

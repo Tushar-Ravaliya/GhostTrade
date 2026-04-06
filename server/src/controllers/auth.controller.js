@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res) => {
     return res
       .status(400)
       .json(
-        new ApiError(400, message = 'User with this email or mobile number already exists')
+        new ApiError(400, { message: 'User with this email or mobile number already exists' })
       );
   }
 
@@ -57,4 +57,14 @@ const loginUser = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, { user, token }, 'User logged in successfully'));
 });
 
-export { registerUser, loginUser };
+const logoutUser = asyncHandler(async (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  });
+
+  return res.status(200).json(new ApiResponse(200, null, 'User logged out successfully'));
+});
+
+export { registerUser, loginUser, logoutUser };

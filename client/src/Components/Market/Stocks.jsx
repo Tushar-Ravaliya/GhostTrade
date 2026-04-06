@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Stocks = () => {
   const [stocks, setStocks] = useState([]);
+  const [logos, setLogos] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -18,6 +19,20 @@ const Stocks = () => {
         // Combine gainers and losers into one array
         const allStocks = [...(data.gainers || []), ...(data.losers || [])];
         setStocks(allStocks);
+
+        // Fetch logos for each stock
+        allStocks.forEach(async (stock) => {
+          try {
+            const { data: logoData } = await axios.get(
+              `http://localhost:8000/api/v1/market/logo/${stock.symbol}`
+            );
+            if (logoData.url) {
+              setLogos((prev) => ({ ...prev, [stock.symbol]: logoData.url }));
+            }
+          } catch {
+            // Logo not available, will show fallback
+          }
+        });
       } catch (err) {
         console.error("Failed to fetch market movers:", err);
       } finally {
@@ -73,6 +88,7 @@ const Stocks = () => {
           {stocks.map((stock, index) => {
             const change = parseFloat(stock.percent_change) || 0;
             const isPositive = change > 0;
+            const logoUrl = logos[stock.symbol];
 
             return (
               <div
@@ -88,12 +104,24 @@ const Stocks = () => {
                 <div className="flex items-center gap-4 mb-8">
                   <div
                     className={`w-12 h-12 rounded-full ${
-                      isPositive ? "bg-[#009900]/20" : "bg-red-500/20"
-                    } flex items-center justify-center ${
-                      isPositive ? "text-[#009900]" : "text-red-500"
-                    } text-2xl font-medium shrink-0`}
+                      logoUrl ? "bg-white p-1.5" : isPositive ? "bg-[#009900]/20" : "bg-red-500/20"
+                    } flex items-center justify-center shrink-0 overflow-hidden`}
                   >
-                    {stock.symbol?.charAt(0)}
+                    {logoUrl ? (
+                      <img
+                        src={logoUrl}
+                        alt={stock.symbol}
+                        className="w-full h-full object-contain rounded-full"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.parentNode.textContent = stock.symbol?.charAt(0);
+                        }}
+                      />
+                    ) : (
+                      <span className={`text-2xl font-medium ${isPositive ? "text-[#009900]" : "text-red-500"}`}>
+                        {stock.symbol?.charAt(0)}
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col truncate">
                     <span className="text-lg text-gray-100 tracking-wide truncate">

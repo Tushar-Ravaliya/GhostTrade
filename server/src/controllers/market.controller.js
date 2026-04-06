@@ -57,3 +57,18 @@ export const searchSymbol = async (req, res) => {
     res.status(status).json({ message: error.message || 'Server error searching symbols' });
   }
 };
+
+/**
+ * GET /logo/:symbol
+ */
+export const getStockLogo = async (req, res) => {
+  try {
+    const { symbol } = req.params;
+    const data = await marketService.getStockLogo(symbol);
+    // TwelveData returns { symbol, logo }, normalize to { symbol, url }
+    res.json({ symbol: data.symbol, url: data.logo || data.url || null });
+  } catch (error) {
+    const status = error.statusCode || 500;
+    res.status(status).json({ message: error.message || 'Server error fetching stock logo' });
+  }
+};

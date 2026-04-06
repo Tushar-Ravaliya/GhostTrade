@@ -5,6 +5,7 @@ import axios from "axios";
 export default function Search() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [logos, setLogos] = useState({});
   const [loading, setLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -25,8 +26,24 @@ export default function Search() {
           `http://localhost:8000/api/v1/market/search`,
           { params: { q: query.trim() } }
         );
-        setResults(data.data || []);
+        const items = data.data || [];
+        setResults(items);
         setShowDropdown(true);
+
+        // Fetch logos for search results
+        items.forEach(async (item) => {
+          if (logos[item.symbol]) return; // Already have it
+          try {
+            const { data: logoData } = await axios.get(
+              `http://localhost:8000/api/v1/market/logo/${item.symbol}`
+            );
+            if (logoData.url) {
+              setLogos((prev) => ({ ...prev, [item.symbol]: logoData.url }));
+            }
+          } catch {
+            // Logo not available
+          }
+        });
       } catch (err) {
         console.error("Search failed:", err);
         setResults([]);
@@ -110,38 +127,55 @@ export default function Search() {
         {/* Search Results Dropdown */}
         {showDropdown && results.length > 0 && (
           <div className="absolute top-full left-0 right-0 mt-2 bg-[#111111] border border-[#333333] rounded-xl overflow-hidden shadow-2xl z-50 max-h-96 overflow-y-auto">
-            {results.map((item, index) => (
-              <div
-                key={`${item.symbol}-${item.exchange}-${index}`}
-                className="flex items-center gap-4 px-5 py-3.5 cursor-pointer hover:bg-[#1a1a1a] transition-colors border-b border-[#222222] last:border-b-0"
-                onClick={() => handleSelect(item.symbol)}
-              >
-                {/* Symbol Initial */}
-                <div className="w-10 h-10 rounded-full bg-[#009900]/20 flex items-center justify-center text-[#009900] text-lg font-bold shrink-0">
-                  {item.symbol?.charAt(0)}
-                </div>
+            {results.map((item, index) => {
+              const logoUrl = logos[item.symbol];
+              return (
+                <div
+                  key={`${item.symbol}-${item.exchange}-${index}`}
+                  className="flex items-center gap-4 px-5 py-3.5 cursor-pointer hover:bg-[#1a1a1a] transition-colors border-b border-[#222222] last:border-b-0"
+                  onClick={() => handleSelect(item.symbol)}
+                >
+                  {/* Symbol Logo or Initial */}
+                  <div className={`w-10 h-10 rounded-full ${logoUrl ? 'bg-white p-1' : 'bg-[#009900]/20'} flex items-center justify-center shrink-0 overflow-hidden`}>
+                    {logoUrl ? (
+                      <img
+                        src={logoUrl}
+                        alt={item.symbol}
+                        className="w-full h-full object-contain rounded-full"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.parentNode.textContent = item.symbol?.charAt(0);
+                        }}
+                      />
+                    ) : (
+                      <span className="text-[#009900] text-lg font-bold">
+                        {item.symbol?.charAt(0)}
+                      </span>
+                    )}
+                  </div>
 
-                {/* Info */}
-                <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-white font-medium text-base truncate">
-                    {item.symbol}
-                  </span>
-                  <span className="text-[#777777] text-xs truncate">
-                    {item.instrument_name}
-                  </span>
-                </div>
+                  {/* Info */}
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <span className="text-white font-medium text-base truncate">
+                      {item.symbol}
+                    </span>
+                    <span className="text-[#777777] text-xs truncate">
+                      {item.instrument_name}
+                    </span>
+                  </div>
 
-                {/* Exchange & Type Badge */}
-                <div className="flex flex-col items-end shrink-0 gap-1">
-                  <span className="text-[#555555] text-xs font-medium">
-                    {item.exchange}
-                  </span>
-                  <span className="text-[10px] text-[#009900] bg-[#009900]/10 px-2 py-0.5 rounded-full uppercase font-medium">
-                    {item.instrument_type}
-                  </span>
+                  {/* Exchange & Type Badge */}
+                  <div className="flex flex-col items-end shrink-0 gap-1">
+                    <span className="text-[#555555] text-xs font-medium">
+                      {item.exchange}
+                    </span>
+                    <span className="text-[10px] text-[#009900] bg-[#009900]/10 px-2 py-0.5 rounded-full uppercase font-medium">
+                      {item.instrument_type}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

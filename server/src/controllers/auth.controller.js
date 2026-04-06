@@ -9,11 +9,13 @@ const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, mobileNo } = req.body;
   const existingUser = await userModel.findOne({ $or: [{ email }, { mobileNo }] });
 
+  console.log(name, email, password, mobileNo);
+
   if (existingUser) {
     return res
       .status(400)
       .json(
-        new ApiError(400, { message: 'User with this email or mobile number already exists' })
+        new ApiError(400, message = 'User with this email or mobile number already exists')
       );
   }
 

@@ -1,23 +1,42 @@
-using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace corebackend.Models.DTOs
+namespace corebackend.Models
 {
-    public class UpdateProfileRequest
+    public class User
     {
-        [Required(ErrorMessage = "Name is required")]
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
+
+        [BsonElement("name")]
         public string Name { get; set; } = null!;
-    }
 
-    public class ChangePasswordRequest
-    {
-        [Required(ErrorMessage = "Current password is required")]
-        public string CurrentPassword { get; set; } = null!;
+        [BsonElement("email")]
+        public string Email { get; set; } = null!;
 
-        [Required(ErrorMessage = "New password is required")]
-        [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
-        public string NewPassword { get; set; } = null!;
+        [BsonElement("password")]
+        public string Password { get; set; } = null!;
 
-        [Required(ErrorMessage = "Confirm password is required")]
-        public string ConfirmPassword { get; set; } = null!;
+        [BsonElement("mobileNo")]
+        public string MobileNo { get; set; } = null!;
+
+        [BsonElement("profilePhoto")]
+        public string ProfilePhoto { get; set; } = "";
+
+        [BsonElement("status")]
+        public string Status { get; set; } = "active";
+
+        [BsonElement("balance")]
+        public double Balance { get; set; } = 100000;
+
+        [BsonElement("createdAt")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [BsonElement("updatedAt")]
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        [BsonElement("__v")]
+        public int? Version { get; set; } = 0;
     }
 }

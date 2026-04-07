@@ -1,42 +1,22 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
-namespace corebackend.Models
+namespace corebackend.Models.DTOs
 {
-    public class User
+    public class UpdateProfileRequest
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
-
-        [BsonElement("name")]
+        [Required]
         public string Name { get; set; } = null!;
+    }
 
-        [BsonElement("email")]
-        public string Email { get; set; } = null!;
+    public class ChangePasswordRequest
+    {
+        [Required]
+        public string CurrentPassword { get; set; } = null!;
 
-        [BsonElement("password")]
-        public string Password { get; set; } = null!;
+        [Required]
+        public string NewPassword { get; set; } = null!;
 
-        [BsonElement("mobileNo")]
-        public string MobileNo { get; set; } = null!;
-
-        [BsonElement("profilePhoto")]
-        public string ProfilePhoto { get; set; } = "";
-
-        [BsonElement("status")]
-        public string Status { get; set; } = "active";
-
-        [BsonElement("balance")]
-        public double Balance { get; set; } = 100000;
-
-        [BsonElement("createdAt")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        [BsonElement("updatedAt")]
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
-        [BsonElement("__v")]
-        public int? Version { get; set; } = 0;
+        [Required]
+        public string ConfirmPassword { get; set; } = null!;
     }
 }

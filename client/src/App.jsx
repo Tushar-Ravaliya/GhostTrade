@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import StockDetails from "./pages/StockDetails";
 import Layout from "./Layout";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 export default function App() {
   return (
@@ -21,13 +22,15 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/market" element={<Market />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/stock/:symbol" element={<StockDetails />} />
+            <Route index element={<Home />} />
+            <Route path="market" element={<Market />} />
+            <Route path="about" element={<AboutUs />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="portfolio" element={<Portfolio />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="history" element={<History />} />
+            </Route>
+            <Route path="stock/:symbol" element={<StockDetails />} />
           </Route>
         </Routes>
       </div>

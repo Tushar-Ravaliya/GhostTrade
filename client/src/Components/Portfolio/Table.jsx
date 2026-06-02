@@ -35,14 +35,20 @@ const Table = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="w-full bg-black flex justify-center p-4">
-        <div className="w-full max-w-7xl bg-[#1A1A1A] rounded-xl p-12 border border-gray-800 text-center">
-          <p className="text-gray-400 text-lg mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white rounded-2xl p-12 border border-border text-center">
+          <div className="w-14 h-14 bg-surface-tertiary rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+          </div>
+          <p className="text-text-muted text-base mb-4">
             Please login to view your portfolio.
           </p>
           <button
             onClick={() => navigate("/login")}
-            className="px-8 py-2.5 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors"
+            className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-sm"
           >
             Login
           </button>
@@ -53,14 +59,14 @@ const Table = () => {
 
   if (loading) {
     return (
-      <div className="w-full bg-black flex justify-center p-4">
-        <div className="w-full max-w-7xl bg-[#1A1A1A] rounded-xl p-6 border border-gray-800 animate-pulse">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white rounded-2xl p-6 border border-border">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="flex gap-4 py-4 border-b border-gray-800 last:border-b-0">
-              <div className="h-5 bg-gray-800 rounded w-24" />
-              <div className="h-5 bg-gray-800 rounded w-16" />
-              <div className="h-5 bg-gray-800 rounded w-20" />
-              <div className="h-5 bg-gray-800 rounded w-20" />
+            <div key={i} className="flex gap-4 py-4 border-b border-border-light last:border-b-0">
+              <div className="h-5 bg-surface-tertiary rounded w-24 animate-shimmer" />
+              <div className="h-5 bg-surface-tertiary rounded w-16 animate-shimmer" />
+              <div className="h-5 bg-surface-tertiary rounded w-20 animate-shimmer" />
+              <div className="h-5 bg-surface-tertiary rounded w-20 animate-shimmer" />
             </div>
           ))}
         </div>
@@ -70,9 +76,9 @@ const Table = () => {
 
   if (holdings.length === 0) {
     return (
-      <div className="w-full bg-black flex justify-center p-4">
-        <div className="w-full max-w-7xl bg-[#1A1A1A] rounded-xl p-12 border border-gray-800 text-center">
-          <p className="text-gray-400 text-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white rounded-2xl p-12 border border-border text-center">
+          <p className="text-text-muted text-base">
             No holdings yet. Start trading to build your portfolio!
           </p>
         </div>
@@ -81,42 +87,44 @@ const Table = () => {
   }
 
   return (
-    <div className="w-full bg-black flex justify-center p-4">
-      <div className="w-full max-w-7xl bg-[#1A1A1A] rounded-xl overflow-hidden border border-gray-800">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="bg-white rounded-2xl overflow-hidden border border-border">
         {/* Desktop Table */}
         <div className="hidden md:block">
-          <table className="w-full text-left border-collapse p-1">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-gray-800 bg-black/50">
-                <th className="p-6 text-sm font-bold text-white">Symbol</th>
-                <th className="p-6 text-sm font-bold text-white">Quantity</th>
-                <th className="p-6 text-sm font-bold text-white">Avg Buy Price</th>
-                <th className="p-6 text-sm font-bold text-white">Total Invested</th>
-                <th className="p-6 text-sm font-bold text-white">Action</th>
+              <tr className="border-b border-border bg-surface-secondary">
+                <th className="px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wide">Symbol</th>
+                <th className="px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wide">Quantity</th>
+                <th className="px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wide">Avg Buy Price</th>
+                <th className="px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wide">Total Invested</th>
+                <th className="px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wide">Action</th>
               </tr>
             </thead>
             <tbody>
               {holdings.map((h) => (
                 <tr
                   key={h._id}
-                  className="border-b border-gray-800 last:border-b-0 hover:bg-white/5 transition-colors cursor-pointer"
+                  className="border-b border-border-light last:border-b-0 hover:bg-surface-secondary transition-colors cursor-pointer"
                   onClick={() => navigate(`/stock/${h.symbol}`)}
                 >
-                  <td className="p-6 text-white font-bold">{h.symbol}</td>
-                  <td className="p-6 text-gray-300 font-medium">{h.quantity}</td>
-                  <td className="p-6 text-gray-300 font-medium">
+                  <td className="px-6 py-4">
+                    <span className="text-text-primary font-bold text-sm">{h.symbol}</span>
+                  </td>
+                  <td className="px-6 py-4 text-text-secondary font-medium text-sm">{h.quantity}</td>
+                  <td className="px-6 py-4 text-text-secondary font-medium text-sm">
                     ${h.avgBuyPrice.toFixed(2)}
                   </td>
-                  <td className="p-6 text-gray-300 font-medium">
+                  <td className="px-6 py-4 text-text-secondary font-medium text-sm">
                     ${h.totalInvested.toFixed(2)}
                   </td>
-                  <td className="p-6">
+                  <td className="px-6 py-4">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/stock/${h.symbol}`);
                       }}
-                      className="px-4 py-1.5 bg-white/10 text-white text-xs font-bold rounded-lg hover:bg-white/20 transition-colors"
+                      className="px-4 py-1.5 bg-primary-50 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition-colors"
                     >
                       Trade
                     </button>
@@ -128,32 +136,28 @@ const Table = () => {
         </div>
 
         {/* Mobile Card View */}
-        <div className="md:hidden flex flex-col divide-y divide-gray-800">
+        <div className="md:hidden flex flex-col divide-y divide-border-light">
           {holdings.map((h) => (
             <div
               key={h._id}
-              className="p-4 space-y-3 hover:bg-white/5 transition-colors cursor-pointer"
+              className="p-4 space-y-2 hover:bg-surface-secondary transition-colors cursor-pointer"
               onClick={() => navigate(`/stock/${h.symbol}`)}
             >
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">Symbol</span>
-                <span className="text-white font-bold">{h.symbol}</span>
+                <span className="text-text-muted text-xs font-medium">Symbol</span>
+                <span className="text-text-primary font-bold text-sm">{h.symbol}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">Quantity</span>
-                <span className="text-white font-medium">{h.quantity}</span>
+                <span className="text-text-muted text-xs font-medium">Quantity</span>
+                <span className="text-text-secondary font-medium text-sm">{h.quantity}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">Avg Buy Price</span>
-                <span className="text-white font-medium">
-                  ${h.avgBuyPrice.toFixed(2)}
-                </span>
+                <span className="text-text-muted text-xs font-medium">Avg Buy Price</span>
+                <span className="text-text-secondary font-medium text-sm">${h.avgBuyPrice.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">Total Invested</span>
-                <span className="text-white font-medium">
-                  ${h.totalInvested.toFixed(2)}
-                </span>
+                <span className="text-text-muted text-xs font-medium">Total Invested</span>
+                <span className="text-text-secondary font-medium text-sm">${h.totalInvested.toFixed(2)}</span>
               </div>
             </div>
           ))}

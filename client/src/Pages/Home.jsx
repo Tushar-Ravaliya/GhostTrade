@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Buttons from "../Components/Home/Section1/buttons";
-import Features from "../Components/Home/Section1/Features";
 import HeroText from "../Components/Home/Section1/HeroText";
-import { Shield, Users, Globe } from "lucide-react";
 import ProfitStocks from "../Components/Home/Section2/ProfitStocks";
 import LossStocks from "../Components/Home/Section2/LossStocks";
 
@@ -18,9 +15,7 @@ export default function Home() {
       try {
         setLoading(true);
         setError(null);
-        const { data } = await axios.get(
-          "http://localhost:8000/api/v1/market/market-movers"
-        );
+        const { data } = await axios.get("http://localhost:8000/api/v1/market/market-movers");
         setGainers(data.gainers || []);
         setLosers(data.losers || []);
       } catch (err) {
@@ -33,35 +28,9 @@ export default function Home() {
     fetchMarketData();
   }, []);
 
-  const f = [
-    {
-      icon: <Shield size={80} strokeWidth={3} />,
-      text1: "Secure Treads",
-      text2: "End-to-end protection",
-    },
-    {
-      icon: <Globe size={80} strokeWidth={3} />,
-      text1: "Global Reach",
-      text2: "180+ Countries",
-    },
-    {
-      icon: <Users size={80} strokeWidth={3} />,
-      text1: "Verified Sellers",
-      text2: "Trusted Community",
-    },
-  ];
-
   return (
-    <div className="text-white">
+    <div>
       <HeroText />
-      <Buttons />
-      <div className="flex flex-wrap justify-center gap-36 w-full max-w-5xl mx-auto px-8 py-10">
-        {f.map((fe, idx) => (
-          <div key={idx}>
-            <Features icon={fe.icon} text1={fe.text1} text2={fe.text2} />
-          </div>
-        ))}
-      </div>
       <ProfitStocks data={gainers} loading={loading} error={error} />
       <LossStocks data={losers} loading={loading} error={error} />
     </div>

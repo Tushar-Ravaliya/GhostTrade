@@ -8,8 +8,11 @@ export default function ProtectedRoute() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-black text-white flex items-center justify-center">
-        <span className="text-sm text-gray-400">Loading...</span>
+      <div className="min-h-screen w-full bg-surface-secondary flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 border-2 border-border border-t-primary rounded-full animate-spin" />
+          <span className="text-sm text-text-muted font-medium">Loading...</span>
+        </div>
       </div>
     );
   }

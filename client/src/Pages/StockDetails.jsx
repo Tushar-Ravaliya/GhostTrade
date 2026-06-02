@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import TradingViewChart from "../Components/StocksDetails/TradingViewChart";
 import Header from "../Components/StocksDetails/Header";
@@ -17,9 +17,7 @@ const StockDetails = () => {
       try {
         setLoading(true);
         setError(null);
-        const { data } = await axios.get(
-          `http://localhost:8000/api/v1/market/quote/${symbol}`
-        );
+        const { data } = await axios.get(`http://localhost:8000/api/v1/market/quote/${symbol}`);
         setStockData(data);
       } catch (err) {
         console.error(err);
@@ -35,16 +33,39 @@ const StockDetails = () => {
   }, [symbol]);
 
   return (
-    <>
-      <div>
-        <Header symbol={symbol} stockData={stockData} loading={loading} />
-        <div className="h-1/5 px-30 pb-8">
-          <TradingViewChart symbol={symbol} />
-        </div>
-        <KeyDataPoints stockData={stockData} loading={loading} />
-        <BuySell symbol={symbol} stockData={stockData} />
+    <div className="bg-surface-secondary min-h-screen">
+      {/* Breadcrumb */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+        <nav className="flex items-center gap-2 text-sm text-text-muted">
+          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+          <span>›</span>
+          <Link to="/market" className="hover:text-primary transition-colors">Stocks</Link>
+          <span>›</span>
+          <span className="text-text-primary font-medium">{symbol}</span>
+        </nav>
       </div>
-    </>
+
+      {/* Header */}
+      <Header symbol={symbol} stockData={stockData} loading={loading} />
+
+      {/* Main Content: Chart + Trade Panel */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left: Chart + Key Data */}
+          <div className="flex-1 min-w-0 flex flex-col gap-6">
+            <TradingViewChart symbol={symbol} />
+            <KeyDataPoints stockData={stockData} loading={loading} />
+          </div>
+
+          {/* Right: Trade Panel */}
+          <div className="w-full lg:w-[360px] shrink-0">
+            <div className="lg:sticky lg:top-24">
+              <BuySell symbol={symbol} stockData={stockData} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 import axios from "axios";
+import { Clock } from "lucide-react";
 
 const API_BASE = "http://localhost:8000/api/v1";
 
@@ -35,17 +36,18 @@ const History = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-black text-white p-6 md:p-12 font-sans">
-        <h1 className="text-4xl md:text-5xl font-serif mb-6 text-white tracking-wide">
-          History
-        </h1>
-        <div className="bg-[#1c1c1c] rounded-xl p-12 border border-[#2a2a2a] text-center">
-          <p className="text-gray-400 text-lg mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-bold text-text-primary mb-6">Transaction History</h1>
+        <div className="bg-white rounded-2xl p-12 border border-border text-center">
+          <div className="w-14 h-14 bg-surface-tertiary rounded-full flex items-center justify-center mx-auto mb-4">
+            <Clock size={24} className="text-text-muted" />
+          </div>
+          <p className="text-text-muted text-base mb-4">
             Please login to view your transaction history.
           </p>
           <button
             onClick={() => navigate("/login")}
-            className="px-8 py-2.5 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors"
+            className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-sm"
           >
             Login
           </button>
@@ -56,21 +58,16 @@ const History = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white p-6 md:p-12 font-sans">
-        <h1 className="text-4xl md:text-5xl font-serif mb-6 text-white tracking-wide">
-          History
-        </h1>
-        <div className="bg-[#1c1c1c] rounded-xl p-6 border border-[#2a2a2a] animate-pulse">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-bold text-text-primary mb-6">Transaction History</h1>
+        <div className="bg-white rounded-2xl p-6 border border-border">
           {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="flex gap-6 py-4 border-b border-[#262626] last:border-b-0"
-            >
-              <div className="h-5 bg-gray-800 rounded w-20" />
-              <div className="h-5 bg-gray-800 rounded w-16" />
-              <div className="h-5 bg-gray-800 rounded w-16" />
-              <div className="h-5 bg-gray-800 rounded w-20" />
-              <div className="h-5 bg-gray-800 rounded w-24" />
+            <div key={i} className="flex gap-6 py-4 border-b border-border-light last:border-b-0">
+              <div className="h-5 bg-surface-tertiary rounded w-20 animate-shimmer" />
+              <div className="h-5 bg-surface-tertiary rounded w-16 animate-shimmer" />
+              <div className="h-5 bg-surface-tertiary rounded w-16 animate-shimmer" />
+              <div className="h-5 bg-surface-tertiary rounded w-20 animate-shimmer" />
+              <div className="h-5 bg-surface-tertiary rounded w-24 animate-shimmer" />
             </div>
           ))}
         </div>
@@ -79,93 +76,88 @@ const History = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 md:p-12 font-sans">
-      <h1 className="text-4xl md:text-5xl font-serif mb-6 text-white tracking-wide">
-        History
-      </h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h1 className="text-2xl font-bold text-text-primary mb-6">Transaction History</h1>
 
-      <div className="bg-[#1c1c1c] rounded-xl p-4 md:p-6 border border-[#2a2a2a] shadow-lg">
+      <div className="bg-white rounded-2xl border border-border shadow-sm">
         {transactions.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">
+            <div className="w-14 h-14 bg-surface-tertiary rounded-full flex items-center justify-center mx-auto mb-4">
+              <Clock size={24} className="text-text-muted" />
+            </div>
+            <p className="text-text-muted text-base">
               No transactions yet. Start trading!
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-[#262626]">
+          <div className="overflow-x-auto">
             <table className="w-full min-w-[700px] text-left border-collapse">
-              <thead className="bg-black text-white border-b border-[#262626]">
-                <tr>
-                  <th className="py-4 px-6 font-bold w-1/7">Type</th>
-                  <th className="py-4 px-6 font-bold w-1/7">Symbol</th>
-                  <th className="py-4 px-6 font-bold w-1/7">Quantity</th>
-                  <th className="py-4 px-6 font-bold w-1/7">Price</th>
-                  <th className="py-4 px-6 font-bold w-1/7">Total</th>
-                  <th className="py-4 px-6 font-bold w-1/7">Balance After</th>
-                  <th className="py-4 px-6 font-bold w-1/7">Date</th>
+              <thead>
+                <tr className="border-b border-border bg-surface-secondary">
+                  <th className="py-4 px-6 text-xs font-semibold text-text-muted uppercase tracking-wide">Type</th>
+                  <th className="py-4 px-6 text-xs font-semibold text-text-muted uppercase tracking-wide">Symbol</th>
+                  <th className="py-4 px-6 text-xs font-semibold text-text-muted uppercase tracking-wide">Quantity</th>
+                  <th className="py-4 px-6 text-xs font-semibold text-text-muted uppercase tracking-wide">Price</th>
+                  <th className="py-4 px-6 text-xs font-semibold text-text-muted uppercase tracking-wide">Total</th>
+                  <th className="py-4 px-6 text-xs font-semibold text-text-muted uppercase tracking-wide">Balance After</th>
+                  <th className="py-4 px-6 text-xs font-semibold text-text-muted uppercase tracking-wide">Date</th>
                 </tr>
               </thead>
-              <tbody className="bg-black">
+              <tbody>
                 {transactions.map((tx, index) => {
                   const isBuy = tx.type === "buy";
-                  const date = new Date(tx.createdAt).toLocaleDateString(
-                    "en-IN",
-                    {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    }
-                  );
-                  const time = new Date(tx.createdAt).toLocaleTimeString(
-                    "en-IN",
-                    {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }
-                  );
+                  const date = new Date(tx.createdAt).toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  });
+                  const time = new Date(tx.createdAt).toLocaleTimeString("en-IN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  });
 
                   return (
                     <tr
                       key={tx._id}
                       className={`${
                         index !== transactions.length - 1
-                          ? "border-b border-[#262626]"
+                          ? "border-b border-border-light"
                           : ""
-                      } hover:bg-[#0a0a0a] transition-colors duration-200`}
+                      } hover:bg-surface-secondary transition-colors duration-200`}
                     >
                       <td className="py-4 px-6">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
+                          className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase ${
                             isBuy
-                              ? "bg-emerald-500/15 text-emerald-400"
-                              : "bg-red-500/15 text-red-400"
+                              ? "bg-primary-50 text-primary"
+                              : "bg-danger-light text-danger"
                           }`}
                         >
                           {tx.type}
                         </span>
                       </td>
-                      <td className="py-4 px-6 font-bold text-white">
+                      <td className="py-4 px-6 font-bold text-text-primary text-sm">
                         {tx.symbol}
                       </td>
-                      <td className="py-4 px-6 text-gray-200">{tx.quantity}</td>
-                      <td className="py-4 px-6 text-gray-200">
+                      <td className="py-4 px-6 text-text-secondary text-sm">{tx.quantity}</td>
+                      <td className="py-4 px-6 text-text-secondary text-sm">
                         ${tx.price.toFixed(2)}
                       </td>
                       <td className="py-4 px-6">
                         <span
-                          className={`font-medium ${
-                            isBuy ? "text-red-400" : "text-emerald-400"
+                          className={`font-semibold text-sm ${
+                            isBuy ? "text-danger" : "text-primary"
                           }`}
                         >
                           {isBuy ? "-" : "+"}${tx.total.toFixed(2)}
                         </span>
                       </td>
-                      <td className="py-4 px-6 text-gray-200">
+                      <td className="py-4 px-6 text-text-secondary text-sm">
                         ${tx.balanceAfter.toFixed(2)}
                       </td>
-                      <td className="py-4 px-6 text-gray-400">
-                        <div>{date}</div>
-                        <div className="text-xs text-gray-600">{time}</div>
+                      <td className="py-4 px-6">
+                        <div className="text-text-secondary text-sm">{date}</div>
+                        <div className="text-text-muted text-xs">{time}</div>
                       </td>
                     </tr>
                   );

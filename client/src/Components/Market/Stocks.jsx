@@ -15,12 +15,9 @@ const Stocks = () => {
         const { data } = await axios.get(
           "http://localhost:8000/api/v1/market/market-movers"
         );
-
-        // Combine gainers and losers into one array
         const allStocks = [...(data.gainers || []), ...(data.losers || [])];
         setStocks(allStocks);
 
-        // Fetch logos for each stock
         allStocks.forEach(async (stock) => {
           try {
             const { data: logoData } = await axios.get(
@@ -30,7 +27,7 @@ const Stocks = () => {
               setLogos((prev) => ({ ...prev, [stock.symbol]: logoData.url }));
             }
           } catch {
-            // Logo not available, will show fallback
+            // Logo not available
           }
         });
       } catch (err) {
@@ -45,25 +42,10 @@ const Stocks = () => {
 
   if (loading) {
     return (
-      <div className="p-6 md:p-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="border-2 border-[#222222] rounded-xl p-5 bg-black animate-pulse"
-            >
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-full bg-[#222222]"></div>
-                <div className="flex flex-col gap-2 flex-1">
-                  <div className="h-4 bg-[#222222] rounded w-20"></div>
-                  <div className="h-3 bg-[#1a1a1a] rounded w-32"></div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="h-4 bg-[#222222] rounded w-16"></div>
-                <div className="h-3 bg-[#1a1a1a] rounded w-12"></div>
-              </div>
-            </div>
+            <div key={i} className="bg-white rounded-2xl p-5 border border-border animate-shimmer h-44" />
           ))}
         </div>
       </div>
@@ -72,92 +54,92 @@ const Stocks = () => {
 
   if (stocks.length === 0) {
     return (
-      <div className="p-6 md:p-10 text-center">
-        <p className="text-[#666666] text-lg">No market data available</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        <p className="text-text-muted text-lg">No market data available</p>
       </div>
     );
   }
 
   return (
-    <>
-      <div className="p-6 md:p-10 m-0">
-        <h2 className="text-white text-2xl font-bold mb-6 tracking-wide">
-          Market Movers
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {stocks.map((stock, index) => {
-            const change = parseFloat(stock.percent_change) || 0;
-            const isPositive = change > 0;
-            const logoUrl = logos[stock.symbol];
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h2 className="text-xl font-bold text-text-primary mb-6">
+        Market Movers
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {stocks.map((stock, index) => {
+          const change = parseFloat(stock.percent_change) || 0;
+          const isPositive = change > 0;
+          const logoUrl = logos[stock.symbol];
+          const volume = stock.volume
+            ? Number(stock.volume) >= 1e6
+              ? `${(Number(stock.volume) / 1e6).toFixed(2)}M`
+              : Number(stock.volume).toLocaleString()
+            : '---';
 
-            return (
-              <div
-                key={`${stock.symbol}-${index}`}
-                onClick={() => navigate(`/stock/${stock.symbol}`)}
-                className={`border-2 cursor-pointer ${
-                  isPositive
-                    ? "hover:bg-green/20 hover:border-green"
-                    : "hover:bg-red-500/20 hover:border-red-500"
-                } border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200`}
-              >
-                {/* Top: Logo and Company Info */}
-                <div className="flex items-center gap-4 mb-8">
-                  <div
-                    className={`w-12 h-12 rounded-full ${
-                      logoUrl ? "bg-white p-1.5" : isPositive ? "bg-[#009900]/20" : "bg-red-500/20"
-                    } flex items-center justify-center shrink-0 overflow-hidden`}
-                  >
-                    {logoUrl ? (
-                      <img
-                        src={logoUrl}
-                        alt={stock.symbol}
-                        className="w-full h-full object-contain rounded-full"
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                          e.target.parentNode.textContent = stock.symbol?.charAt(0);
-                        }}
-                      />
-                    ) : (
-                      <span className={`text-2xl font-medium ${isPositive ? "text-[#009900]" : "text-red-500"}`}>
-                        {stock.symbol?.charAt(0)}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex flex-col truncate">
-                    <span className="text-lg text-gray-100 tracking-wide truncate">
-                      {stock.symbol}
+          return (
+            <div
+              key={`${stock.symbol}-${index}`}
+              onClick={() => navigate(`/stock/${stock.symbol}`)}
+              className={`bg-white rounded-2xl p-5 border border-border cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+                isPositive
+                  ? "hover:border-primary/30 hover:shadow-primary/5"
+                  : "hover:border-danger/30 hover:shadow-danger/5"
+              }`}
+            >
+              {/* Top Row */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 bg-surface-tertiary border border-border">
+                  {logoUrl ? (
+                    <img
+                      src={logoUrl}
+                      alt={stock.symbol}
+                      className="w-full h-full object-contain p-1.5"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        e.target.parentNode.innerHTML = `<span class="${isPositive ? 'text-primary' : 'text-danger'} font-bold text-lg">${stock.symbol?.charAt(0)}</span>`;
+                      }}
+                    />
+                  ) : (
+                    <span className={`text-lg font-bold ${isPositive ? "text-primary" : "text-danger"}`}>
+                      {stock.symbol?.charAt(0)}
                     </span>
-                    <span className="text-xs text-[#666666] truncate mt-0.5">
-                      {stock.name}
-                    </span>
-                  </div>
+                  )}
                 </div>
+                <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${
+                  isPositive
+                    ? "bg-primary-50 text-primary"
+                    : "bg-danger-light text-danger"
+                }`}>
+                  {isPositive ? "+" : ""}{change.toFixed(2)}%
+                </span>
+              </div>
 
-                {/* Bottom: Price and Change */}
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-base font-medium tracking-wider text-gray-200">
-                      {parseFloat(stock.close).toFixed(2)}
-                    </span>
-                    <span className="text-[10px] text-gray-500 font-medium">
-                      {stock.currency || "USD"}
-                    </span>
-                  </div>
-                  <span
-                    className={`text-sm ${
-                      isPositive ? "text-green" : "text-red-500"
-                    } tracking-wide`}
-                  >
-                    {isPositive ? "+" : ""}
-                    {change.toFixed(2)}%
-                  </span>
+              {/* Company Info */}
+              <div className="mb-3">
+                <p className="text-text-primary font-bold text-lg">{stock.symbol}</p>
+                <p className="text-text-muted text-xs truncate">{stock.name}</p>
+              </div>
+
+              {/* Price + Volume */}
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-text-primary text-xl font-bold">
+                    ${parseFloat(stock.close).toFixed(2)}
+                  </p>
+                  <p className={`text-sm font-medium ${isPositive ? "text-primary" : "text-danger"}`}>
+                    {isPositive ? "+" : ""}{change.toFixed(2)}%
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-text-muted text-[11px] uppercase font-medium">Volume</p>
+                  <p className="text-text-secondary text-sm font-semibold">{volume}</p>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 };
 

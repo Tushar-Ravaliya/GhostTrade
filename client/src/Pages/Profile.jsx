@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useAuthStore from '../store/useAuthStore';
-import { Camera, Check, X, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Camera, Loader2, Eye, EyeOff } from 'lucide-react';
 
 export default function Profile() {
   const { user, updateProfile, uploadPhoto, changePassword } = useAuthStore();
@@ -59,7 +59,6 @@ export default function Profile() {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validate file
     if (!file.type.startsWith('image/')) {
       setPhotoMsg({ text: 'Please select an image file', type: 'error' });
       return;
@@ -122,188 +121,210 @@ export default function Profile() {
   const defaultAvatar = 'Images/profileImg.jpeg';
   const avatarSrc = user?.profilePhoto || defaultAvatar;
 
+  const inputClasses = "w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm";
+  const disabledInputClasses = "w-full border border-border rounded-xl px-4 py-3 text-text-muted bg-surface-tertiary cursor-not-allowed text-sm";
+
   return (
-    <div className='min-h-screen w-full'>
-      <h2 className='text-white font-bold text-2xl md:text-3xl px-5 md:px-10 mt-6'>Profile Setting</h2>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h1 className="text-2xl font-bold text-text-primary mb-6">Profile Settings</h1>
 
-      <div className='text-white px-5 md:px-10 py-6 w-full max-w-9xl'>
-
-        {/* ── Profile Photo Section ── */}
-        <div className='flex flex-col md:flex-row items-center gap-6 md:gap-10 border-b border-gray-800 pb-8'>
-          <div className='relative group'>
+      {/* Profile Photo Section */}
+      <div className="bg-white rounded-2xl border border-border p-6 mb-6">
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="relative group">
             <img
-              className='rounded-full h-24 w-24 md:h-28 md:w-28 object-cover border-2 border-white p-1 transition-transform group-hover:scale-105'
+              className="rounded-full h-24 w-24 object-cover border-2 border-border transition-transform group-hover:scale-105"
               src={avatarSrc}
               alt="Profile"
             />
             {photoLoading && (
-              <div className='absolute inset-0 bg-black/60 rounded-full flex items-center justify-center'>
-                <Loader2 className='animate-spin text-white' size={28} />
+              <div className="absolute inset-0 bg-white/80 rounded-full flex items-center justify-center">
+                <Loader2 className="animate-spin text-primary" size={24} />
               </div>
             )}
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={photoLoading}
-              className='absolute bottom-0 right-0 bg-green-700 hover:bg-green-600 p-2 rounded-full transition-colors shadow-lg'
+              className="absolute bottom-0 right-0 bg-primary hover:bg-primary-dark p-2 rounded-full transition-colors shadow-md text-white"
             >
-              <Camera size={16} />
+              <Camera size={14} />
             </button>
             <input
               ref={fileInputRef}
               type="file"
               accept="image/*"
               onChange={handlePhotoUpload}
-              className='hidden'
+              className="hidden"
             />
           </div>
-          <div className='flex flex-col gap-3 text-center md:text-left'>
-            <h3 className='text-lg font-semibold'>{user?.name || 'User'}</h3>
-            <p className='text-gray-400 text-sm md:text-base'>JPG, GIF, or PNG. Max 5MB.</p>
+          <div className="flex flex-col gap-2 text-center sm:text-left">
+            <h3 className="text-lg font-semibold text-text-primary">{user?.name || 'User'}</h3>
+            <p className="text-text-muted text-sm">JPG, GIF, or PNG. Max 5MB.</p>
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={photoLoading}
-              className='bg-gray-800 hover:bg-gray-700 transition-colors rounded-md py-2 px-6 w-full md:w-fit disabled:opacity-50'
+              className="bg-surface-tertiary hover:bg-surface-secondary text-text-secondary transition-colors rounded-lg py-2 px-5 text-sm font-medium disabled:opacity-50"
             >
               {photoLoading ? 'Uploading...' : 'Upload Photo'}
             </button>
             {photoMsg.text && (
-              <p className={`text-sm ${photoMsg.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+              <p className={`text-xs ${photoMsg.type === 'success' ? 'text-primary' : 'text-danger'}`}>
                 {photoMsg.text}
               </p>
             )}
           </div>
         </div>
+      </div>
 
-        {/* ── Profile Info Section ── */}
-        <form onSubmit={handleProfileUpdate} className='flex flex-col gap-2 text-white font-semibold py-8'>
-          <h3>Name</h3>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className='w-full border-gray-700 text-gray-300 p-2.5 border-b focus:border-green-700 focus:outline-none bg-transparent'
-            placeholder='Your Name'
-          />
+      {/* Profile Info Section */}
+      <div className="bg-white rounded-2xl border border-border p-6 mb-6">
+        <h2 className="text-lg font-bold text-text-primary mb-5">Personal Information</h2>
+        <form onSubmit={handleProfileUpdate} className="flex flex-col gap-4">
+          <div>
+            <label className="text-sm font-medium text-text-secondary mb-1.5 block">Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={inputClasses}
+              placeholder="Your Name"
+            />
+          </div>
 
-          <h3 className='mt-5'>Email</h3>
-          <input
-            type="text"
-            value={user?.email || ''}
-            disabled
-            className='w-full border-gray-700 text-gray-500 p-2.5 border-b bg-transparent cursor-not-allowed opacity-60'
-            placeholder='Email'
-          />
+          <div>
+            <label className="text-sm font-medium text-text-secondary mb-1.5 block">Email</label>
+            <input
+              type="text"
+              value={user?.email || ''}
+              disabled
+              className={disabledInputClasses}
+              placeholder="Email"
+            />
+          </div>
 
-          <h3 className='mt-5'>Mobile Number</h3>
-          <input
-            type="text"
-            value={user?.mobileNo || ''}
-            disabled
-            className='w-full border-gray-700 text-gray-500 p-2.5 border-b bg-transparent cursor-not-allowed opacity-60'
-            placeholder='Mobile Number'
-          />
+          <div>
+            <label className="text-sm font-medium text-text-secondary mb-1.5 block">Mobile Number</label>
+            <input
+              type="text"
+              value={user?.mobileNo || ''}
+              disabled
+              className={disabledInputClasses}
+              placeholder="Mobile Number"
+            />
+          </div>
 
           {profileMsg.text && (
-            <p className={`text-sm mt-2 ${profileMsg.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+            <p className={`text-sm ${profileMsg.type === 'success' ? 'text-primary' : 'text-danger'}`}>
               {profileMsg.text}
             </p>
           )}
 
-          <button
-            type='submit'
-            disabled={profileLoading}
-            className='border border-white hover:bg-white hover:text-black transition-all mt-6 rounded-lg py-2 w-full md:w-1/5 self-end disabled:opacity-50'
-          >
-            {profileLoading ? 'Saving...' : 'Save Changes'}
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={profileLoading}
+              className="bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-2.5 rounded-xl transition-colors disabled:opacity-50 text-sm"
+            >
+              {profileLoading ? 'Saving...' : 'Save Changes'}
+            </button>
+          </div>
         </form>
+      </div>
 
-        {/* ── Password Change Section ── */}
-        <form onSubmit={handlePasswordChange} className='flex flex-col gap-2 text-gray-400 font-semibold py-8 border-t border-gray-800'>
-          <h2 className='font-bold text-2xl md:text-3xl text-white mb-4'>Password Change</h2>
-
-          <h3 className='mt-3'>Current Password</h3>
-          <div className='relative'>
-            <input
-              type={showPasswords.current ? 'text' : 'password'}
-              value={passwords.currentPassword}
-              onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
-              className='w-full border-gray-600 text-gray-400 p-2.5 border-b focus:border-green-700 focus:outline-none bg-transparent pr-10'
-              placeholder='Current Password'
-              required
-            />
-            <button
-              type='button'
-              onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
-              className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300'
-            >
-              {showPasswords.current ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
+      {/* Password Change Section */}
+      <div className="bg-white rounded-2xl border border-border p-6 mb-6">
+        <h2 className="text-lg font-bold text-text-primary mb-5">Change Password</h2>
+        <form onSubmit={handlePasswordChange} className="flex flex-col gap-4">
+          <div>
+            <label className="text-sm font-medium text-text-secondary mb-1.5 block">Current Password</label>
+            <div className="relative">
+              <input
+                type={showPasswords.current ? 'text' : 'password'}
+                value={passwords.currentPassword}
+                onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
+                className={`${inputClasses} pr-10`}
+                placeholder="Current Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
+              >
+                {showPasswords.current ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
-          <h3 className='mt-5'>New Password</h3>
-          <div className='relative'>
-            <input
-              type={showPasswords.new ? 'text' : 'password'}
-              value={passwords.newPassword}
-              onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-              className='w-full border-gray-600 text-gray-400 p-2.5 border-b focus:border-green-700 focus:outline-none bg-transparent pr-10'
-              placeholder='New Password'
-              required
-            />
-            <button
-              type='button'
-              onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
-              className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300'
-            >
-              {showPasswords.new ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
+          <div>
+            <label className="text-sm font-medium text-text-secondary mb-1.5 block">New Password</label>
+            <div className="relative">
+              <input
+                type={showPasswords.new ? 'text' : 'password'}
+                value={passwords.newPassword}
+                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
+                className={`${inputClasses} pr-10`}
+                placeholder="New Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
+              >
+                {showPasswords.new ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
-          <h3 className='mt-5'>Confirm Password</h3>
-          <div className='relative'>
-            <input
-              type={showPasswords.confirm ? 'text' : 'password'}
-              value={passwords.confirmPassword}
-              onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
-              className='w-full border-gray-600 text-gray-400 p-2.5 border-b focus:border-green-700 focus:outline-none bg-transparent pr-10'
-              placeholder='Confirm Password'
-              required
-            />
-            <button
-              type='button'
-              onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
-              className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300'
-            >
-              {showPasswords.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
+          <div>
+            <label className="text-sm font-medium text-text-secondary mb-1.5 block">Confirm Password</label>
+            <div className="relative">
+              <input
+                type={showPasswords.confirm ? 'text' : 'password'}
+                value={passwords.confirmPassword}
+                onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
+                className={`${inputClasses} pr-10`}
+                placeholder="Confirm Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
+              >
+                {showPasswords.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           {passwordMsg.text && (
-            <p className={`text-sm mt-2 ${passwordMsg.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+            <p className={`text-sm ${passwordMsg.type === 'success' ? 'text-primary' : 'text-danger'}`}>
               {passwordMsg.text}
             </p>
           )}
 
-          <button
-            type='submit'
-            disabled={passwordLoading}
-            className='border border-white hover:bg-white hover:text-black transition-all mt-6 rounded-lg py-2 w-full md:w-1/5 self-end disabled:opacity-50'
-          >
-            {passwordLoading ? 'Changing...' : 'Change Password'}
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={passwordLoading}
+              className="bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-2.5 rounded-xl transition-colors disabled:opacity-50 text-sm"
+            >
+              {passwordLoading ? 'Changing...' : 'Change Password'}
+            </button>
+          </div>
         </form>
+      </div>
 
-        {/* ── Account Deletion Section ── */}
-        <div className='flex flex-col gap-4 py-8 border-t border-gray-800 mb-10'>
-          <h2 className='font-bold text-2xl md:text-3xl text-white'>Account Deletion</h2>
-          <p className='text-gray-500 w-full md:w-2/3 lg:w-1/2'>
-            If you ever want to delete your account, you can. The process will take 30 days and you can change your mind at any time and halt the process.
-          </p>
-          <button className='border border-red-600 text-red-600 hover:bg-red-600/20 transition-all mt-3 rounded-lg py-2 w-full md:w-1/5'>
-            Delete Account
-          </button>
-        </div>
+      {/* Account Deletion Section */}
+      <div className="bg-white rounded-2xl border border-border p-6">
+        <h2 className="text-lg font-bold text-text-primary mb-2">Account Deletion</h2>
+        <p className="text-text-muted text-sm mb-4 max-w-lg">
+          If you ever want to delete your account, you can. The process will take 30 days and you can change your mind at any time and halt the process.
+        </p>
+        <button className="border border-danger text-danger hover:bg-danger-light transition-colors rounded-xl py-2.5 px-6 text-sm font-semibold">
+          Delete Account
+        </button>
       </div>
     </div>
   );

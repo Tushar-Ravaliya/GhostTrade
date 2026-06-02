@@ -2,62 +2,86 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
-    return (
-        <>
-            <div className='h-px w-full bg-gray-200'></div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-8 py-10 text-white'>
+  return (
+    <footer className="bg-white border-t border-border">
+      {/* Disclaimer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-border-light">
+        <div className="flex items-center gap-2 text-text-muted text-xs">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+          <p>Market data is for informational purposes only and not intended for trading or investment advice.</p>
+        </div>
+      </div>
 
-                <div className='flex flex-col gap-4'>
-                    <div className='flex items-center gap-3'>
-                        <img className='rounded-full h-12 w-12 object-cover' src="Images/Logo1.jpeg" alt="Logo" />
-                        <p className='font-bold text-3xl whitespace-nowrap'>
-                            Ghost <span className='text-green-700'>Trade</span>
-                        </p>
-                    </div>
-                    <p className='text-gray-400 text-sm leading-relaxed'>
-                        We provide a powerful, risk-free environment for traders to sharpen their skills.
-                        By using real-time market data in a simulated setting.
-                    </p>
-                </div>
+      {/* Main Footer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="flex flex-col gap-3">
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg>
+              </div>
+              <span className="text-text-primary font-bold text-lg">
+                Ghost<span className="text-primary">Trade</span>
+              </span>
+            </Link>
+            <p className="text-text-muted text-sm leading-relaxed max-w-xs">
+              A powerful, risk-free environment for traders to sharpen their skills using real-time market data.
+            </p>
+          </div>
 
-                <div className='flex flex-col gap-2'>
-                    <p className='font-bold text-xl mb-2'>Outlooks</p>
-                    <div className='flex flex-col gap-1 text-gray-400'>
-                        <Link to='/' className="hover:text-green-500 transition-colors">Home</Link>
-                        <Link to='/market' className="hover:text-green-500 transition-colors">Market</Link>
-                        <Link to='/about' className="hover:text-green-500 transition-colors">About Us</Link>
-                        <Link to='/profile' className="hover:text-green-500 transition-colors">Profile</Link>
-                        <Link to='/portfolio' className="hover:text-green-500 transition-colors">Portfolio</Link>
-                        <Link to='/history' className="hover:text-green-500 transition-colors">History</Link>
-                    </div>
-                </div>
+          {/* Quick Links */}
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold text-text-primary text-sm mb-1">Quick Links</p>
+            <Link to="/" className="text-text-muted text-sm hover:text-primary transition-colors">Home</Link>
+            <Link to="/market" className="text-text-muted text-sm hover:text-primary transition-colors">Markets</Link>
+            <Link to="/about" className="text-text-muted text-sm hover:text-primary transition-colors">About Us</Link>
+            <Link to="/portfolio" className="text-text-muted text-sm hover:text-primary transition-colors">Portfolio</Link>
+            <Link to="/history" className="text-text-muted text-sm hover:text-primary transition-colors">History</Link>
+          </div>
 
-                <div className='flex flex-col gap-2'>
-                    <p className='font-bold text-xl mb-2'>Services</p>
-                    <div className='text-gray-400 flex flex-col gap-1'>
-                        <p>Real Time Data Streaming</p>
-                        <p>Risk Free Virtual Trading</p>
-                        <p>Advanced Portfolio Tracking</p>
-                        <p>Strategy Backtracking</p>
-                        <p>User-Centric Interface</p>
-                        <p>Educational Resources</p>
-                    </div>
-                </div>
+          {/* Services */}
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold text-text-primary text-sm mb-1">Services</p>
+            <p className="text-text-muted text-sm">Real Time Data Streaming</p>
+            <p className="text-text-muted text-sm">Risk Free Virtual Trading</p>
+            <p className="text-text-muted text-sm">Advanced Portfolio Tracking</p>
+            <p className="text-text-muted text-sm">Strategy Backtesting</p>
+            <p className="text-text-muted text-sm">Educational Resources</p>
+          </div>
 
-                <div className='flex flex-col gap-2'>
-                    <p className='font-bold text-xl mb-2'>Contact Us</p>
-                    <p className='text-gray-400'>66 Road Brooklyn Street, 600 <br /> New York, USA</p>
-                    <p className='text-gray-400 mt-2'>needhelp@company.com</p>
-                    <p className='text-green-700 font-semibold'>+92 (666) 888 0000</p>
-                </div>
-            </div>
+          {/* Contact */}
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold text-text-primary text-sm mb-1">Contact Us</p>
+            <p className="text-text-muted text-sm">66 Road Brooklyn Street, 600<br />New York, USA</p>
+            <p className="text-text-muted text-sm">needhelp@company.com</p>
+            <p className="text-primary font-semibold text-sm">+92 (666) 888 0000</p>
+          </div>
+        </div>
+      </div>
 
-            <div className='border-t border-gray-800 px-8 py-8 overflow-hidden'>
-                <div className='flex flex-col md:flex-row items-center font-bold text-2xl md:text-4xl lg:text-6xl tracking-tight md:tracking-[10px] lg:tracking-[23px] text-center md:text-left'>
-                    <p className='text-white'>NO PRESSURE /</p>
-                    <p className='text-green-700 md:ml-4'>NO DIAMONDS</p>
-                </div>
-            </div>
-        </>
-    )
+      {/* Copyright */}
+      <div className="border-t border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-text-muted text-xs">
+            © 2026 GhostTrade. All rights reserved.
+          </p>
+          <div className="flex items-center gap-4 text-text-muted text-xs">
+            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
+            <span>•</span>
+            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+            <span>•</span>
+            <a href="#" className="hover:text-primary transition-colors">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
 }

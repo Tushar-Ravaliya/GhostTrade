@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { TrendingDown, ArrowRight } from 'lucide-react';
 
 export default function LossStocks({ data = [], loading, error }) {
   const [logos, setLogos] = useState({});
@@ -22,71 +23,89 @@ export default function LossStocks({ data = [], loading, error }) {
   }, [data]);
 
   return (
-    <div className="bg-black text-white p-6 md:p-10 m-0 font-sans">
-      {/* Header section */}
-      <div className="flex items-center gap-3 mb-8">
-        <h1 className="text-3xl md:text-4xl font-medium tracking-wide text-gray-50">
-          Loss Stocks
-        </h1>
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* Section Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 bg-danger-light rounded-lg">
+            <TrendingDown size={20} className="text-danger" />
+          </div>
+          <h2 className="text-xl md:text-2xl font-bold text-text-primary">Top Losers</h2>
+        </div>
+        <Link
+          to="/market"
+          className="flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark transition-colors"
+        >
+          View All <ArrowRight size={16} />
+        </Link>
       </div>
 
-      {/* Grid container */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
-          <p className="text-gray-400">Loading market data...</p>
+          Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-2xl p-5 border border-border animate-shimmer h-44" />
+          ))
         ) : error ? (
-          <p className="text-red-400">{error}</p>
+          <p className="text-danger text-sm col-span-full">{error}</p>
         ) : data.length > 0 ? (
           data.map((stock) => {
             const logoUrl = logos[stock.symbol];
+            const change = Number(stock.percent_change).toFixed(2);
+            const volume = stock.volume
+              ? Number(stock.volume) >= 1e6
+                ? `${(Number(stock.volume) / 1e6).toFixed(2)}M`
+                : Number(stock.volume).toLocaleString()
+              : '---';
+
             return (
               <Link
                 to={`/stock/${stock.symbol}`}
-                className="hover:text-red-600 transition-colors"
                 key={stock.symbol}
+                className="group"
               >
-                <div className="border-2 hover:border-red-600 hover:bg-red-500/20 border-[#222222] rounded-xl p-5 flex flex-col justify-between bg-black transition-colors duration-200">
-                  {/* Top: Logo and Company Info */}
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className={`w-12 h-12 rounded-full ${logoUrl ? 'bg-white p-1.5' : 'bg-red-500/20'} flex items-center justify-center shrink-0 overflow-hidden`}>
+                <div className="bg-white rounded-2xl p-5 border border-border hover:border-danger/30 hover:shadow-lg hover:shadow-danger/5 transition-all duration-300 hover:-translate-y-1">
+                  {/* Top Row: Logo + Badge */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 bg-surface-tertiary border border-border">
                       {logoUrl ? (
                         <img
                           src={logoUrl}
                           alt={stock.symbol}
-                          className="w-full h-full object-contain rounded-full"
+                          className="w-full h-full object-contain p-1.5"
                           onError={(e) => {
                             e.target.style.display = 'none';
-                            e.target.parentNode.textContent = stock.symbol.charAt(0);
+                            e.target.parentNode.innerHTML = `<span class="text-danger font-bold text-lg">${stock.symbol.charAt(0)}</span>`;
                           }}
                         />
                       ) : (
-                        <span className="text-red-500 text-2xl font-medium">
-                          {stock.symbol.charAt(0)}
-                        </span>
+                        <span className="text-danger font-bold text-lg">{stock.symbol.charAt(0)}</span>
                       )}
                     </div>
-                    <div className="flex flex-col truncate">
-                      <span className="text-lg text-gray-100 tracking-wide truncate">
-                        {stock.symbol}
-                      </span>
-                      <span className="text-xs text-[#666666] truncate mt-0.5">
-                        {stock.name}
-                      </span>
-                    </div>
+                    <span className="px-2.5 py-1 bg-danger-light text-danger text-xs font-bold rounded-full">
+                      {change}%
+                    </span>
                   </div>
 
-                  {/* Bottom: Price and Change */}
-                  <div className="flex gap-1">
+                  {/* Company Info */}
+                  <div className="mb-3">
+                    <p className="text-text-primary font-bold text-lg">{stock.symbol}</p>
+                    <p className="text-text-muted text-xs truncate">{stock.name}</p>
+                  </div>
+
+                  {/* Price + Volume */}
+                  <div className="flex items-end justify-between">
                     <div>
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-base font-medium tracking-wider text-gray-200">
-                          {Number(stock.close).toFixed(2)}
-                        </span>
-                        <span className="text-[10px] text-gray-500 font-medium">USD</span>
-                      </div>
-                      <span className="text-sm text-[#ff0000] tracking-wide">
-                        {Number(stock.percent_change).toFixed(2)}%
-                      </span>
+                      <p className="text-text-primary text-xl font-bold">
+                        ${Number(stock.close).toFixed(2)}
+                      </p>
+                      <p className="text-danger text-sm font-medium">
+                        {change}%
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-text-muted text-[11px] uppercase font-medium">Volume</p>
+                      <p className="text-text-secondary text-sm font-semibold">{volume}</p>
                     </div>
                   </div>
                 </div>
@@ -94,9 +113,9 @@ export default function LossStocks({ data = [], loading, error }) {
             );
           })
         ) : (
-          <h1>No Loss data</h1>
+          <p className="text-text-muted col-span-full text-center py-8">No losers data available</p>
         )}
       </div>
-    </div>
+    </section>
   );
 }

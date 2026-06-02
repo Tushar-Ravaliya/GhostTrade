@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Image from "../Components/LoginPage/Image";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
+import { TrendingUp, Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ export default function Login() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const setUser = useAuthStore((state) => state.setUser);
 
@@ -24,7 +25,6 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // Determine if it's an email or mobile number
       const isEmail = formData.identifier.includes("@");
       const loginData = {
         password: formData.password,
@@ -52,61 +52,98 @@ export default function Login() {
   };
 
   return (
-    <>
-      <div className="bg-[url(/Images/background-image.jpeg)] bg-cover bg-center fixed inset-0 blur-sm z-0"></div>
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-        <div className="w-full max-w-5xl bg-black/60 backdrop-blur-sm rounded-2xl p-5 sm:p-8 lg:p-10">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
-            <div className="w-full lg:w-1/2 flex flex-col gap-4 text-white">
-              <h1 className="text-3xl sm:text-4xl font-bold text-center lg:text-left">
-                Login Here
-              </h1>
-              <p className="text-center lg:text-left">Welcome to paper trading Website</p>
-              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="min-h-screen bg-surface-secondary flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2.5 mb-4">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+              <TrendingUp size={22} className="text-white" />
+            </div>
+            <span className="text-text-primary font-bold text-2xl">
+              Ghost<span className="text-primary">Trade</span>
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-text-primary">Welcome back</h1>
+          <p className="text-text-muted text-sm mt-1">Sign in to your trading account</p>
+        </div>
+
+        {/* Form Card */}
+        <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
+          {error && (
+            <div className="mb-4 p-3 bg-danger-light border border-danger/20 rounded-xl text-danger text-sm text-center font-medium">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">
+                Email or Mobile Number
+              </label>
+              <input
+                type="text"
+                name="identifier"
+                value={formData.identifier}
+                onChange={handleChange}
+                className="w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm"
+                placeholder="Enter your email or mobile number"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">
+                Password
+              </label>
+              <div className="relative">
                 <input
-                  type="text"
-                  name="identifier"
-                  value={formData.identifier}
-                  onChange={handleChange}
-                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                  placeholder="Email or Mobile Number"
-                  required
-                />
-                <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                  placeholder="Password"
+                  className="w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm pr-10"
+                  placeholder="Enter your password"
                   required
                 />
-                <p className="text-sm text-right cursor-pointer">Forgot Password</p>
                 <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-blue-700 hover:bg-blue-600 transition-colors rounded-2xl w-full px-4 py-2.5 disabled:opacity-50"
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
                 >
-                  {loading ? "Logging in..." : "Login"}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
-              </form>
-              <div className="flex justify-between">
-                <p className="text-xs sm:text-sm">I don't have an Account</p>
-                <NavLink
-                  to="/register"
-                  className="text-xs sm:text-sm text-red-400 hover:text-red-300 transition-colors"
-                >
-                  Sign Up
-                </NavLink>
               </div>
             </div>
-            <div className="w-full lg:w-1/2 rounded-xl min-h-55 sm:min-h-75 lg:min-h-105 flex items-center justify-center">
-              <Image />
+
+            <div className="flex justify-end">
+              <p className="text-xs text-primary hover:text-primary-dark cursor-pointer font-medium transition-colors">
+                Forgot Password?
+              </p>
             </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-primary hover:bg-primary-dark text-white font-semibold rounded-xl w-full py-3 transition-all disabled:opacity-50 shadow-sm text-sm"
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-text-muted text-sm">
+              Don't have an account?{" "}
+              <NavLink
+                to="/register"
+                className="text-primary hover:text-primary-dark font-semibold transition-colors"
+              >
+                Sign Up
+              </NavLink>
+            </p>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

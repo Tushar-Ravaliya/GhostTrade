@@ -24,7 +24,7 @@ function TradingViewChart({ symbol = "AAPL" }) {
       "symbol": symbol,
       "interval": "D",
       "timezone": "Etc/UTC",
-      "theme": "dark",
+      "theme": "light",
       "style": "1",
       "locale": "en",
       "enable_publishing": false,
@@ -36,11 +36,11 @@ function TradingViewChart({ symbol = "AAPL" }) {
   }, [symbol]);
 
   return (
-    <div className="flex flex-col h-[70vh] w-full p-4 bg-white/10 rounded-sm">
+    <div className="bg-white rounded-2xl border border-border overflow-hidden">
       <div
-        className="tradingview-widget-container border border-slate-700 rounded-lg overflow-hidden"
+        className="tradingview-widget-container"
         ref={container}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "480px", width: "100%" }}
       >
       </div>
     </div>

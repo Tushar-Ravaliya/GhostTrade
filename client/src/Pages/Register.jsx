@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Image from "../Components/LoginPage/Image";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
+import { TrendingUp, Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -14,6 +14,7 @@ export default function Register() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const setUser = useAuthStore((state) => state.setUser);
 
@@ -43,7 +44,6 @@ export default function Register() {
       );
 
       if (response.data.statusCode === 201) {
-        console.log("Registration successful:", response.data.message);
         navigate("/login");
       }
     } catch (err) {
@@ -55,87 +55,127 @@ export default function Register() {
   };
 
   return (
-    <>
-      <div className="bg-[url(/Images/background-image.jpeg)] bg-cover bg-center fixed inset-0 blur-sm z-0"></div>
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-        <div className="w-full max-w-5xl bg-black/60 backdrop-blur-sm rounded-2xl p-5 sm:p-8 lg:p-10">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
-            <div className="w-full lg:w-1/2 flex flex-col gap-4 text-white">
-              <h1 className="text-3xl sm:text-4xl font-bold text-center lg:text-left">
-                Register Here
-              </h1>
-              <p className="text-center lg:text-left">Welcome to paper trading Website</p>
-              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="min-h-screen bg-surface-secondary flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2.5 mb-4">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+              <TrendingUp size={22} className="text-white" />
+            </div>
+            <span className="text-text-primary font-bold text-2xl">
+              Ghost<span className="text-primary">Trade</span>
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-text-primary">Create your account</h1>
+          <p className="text-text-muted text-sm mt-1">Start your trading journey today</p>
+        </div>
+
+        {/* Form Card */}
+        <div className="bg-white rounded-2xl border border-border shadow-sm p-6 md:p-8">
+          {error && (
+            <div className="mb-4 p-3 bg-danger-light border border-danger/20 rounded-xl text-danger text-sm text-center font-medium">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Full Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Mobile Number</label>
+              <input
+                type="text"
+                name="mobileNo"
+                value={formData.mobileNo}
+                onChange={handleChange}
+                className="w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm"
+                placeholder="Enter your mobile number"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Password</label>
+              <div className="relative">
                 <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                  placeholder="Name"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                  placeholder="Email"
-                  required
-                />
-                <input
-                  type="text"
-                  name="mobileNo"
-                  value={formData.mobileNo}
-                  onChange={handleChange}
-                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                  placeholder="Mobile Number"
-                  required
-                />
-                <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                  placeholder="Password"
-                  required
-                />
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="bg-gray-800 border border-white w-full rounded-lg px-3 py-3"
-                  placeholder="Confirm Password"
+                  className="w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm pr-10"
+                  placeholder="Create a password"
                   required
                 />
                 <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-blue-700 hover:bg-blue-600 transition-colors rounded-2xl w-full px-4 py-2.5 disabled:opacity-50"
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
                 >
-                  {loading ? "Registering..." : "Register"}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
-              </form>
-              <div className="flex justify-between">
-                <p className="text-xs sm:text-sm">I have an Account</p>
-                <NavLink
-                  to="/login"
-                  className="text-xs sm:text-sm text-red-400 hover:text-red-300 transition-colors"
-                >
-                  Sign In
-                </NavLink>
               </div>
             </div>
-            <div className="w-full lg:w-1/2 rounded-xl min-h-55 sm:min-h-75 lg:min-h-105 flex items-center justify-center">
-              <Image />
+
+            <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full border border-border rounded-xl px-4 py-3 text-text-primary bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all text-sm"
+                placeholder="Confirm your password"
+                required
+              />
             </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-primary hover:bg-primary-dark text-white font-semibold rounded-xl w-full py-3 transition-all disabled:opacity-50 shadow-sm text-sm mt-2"
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-text-muted text-sm">
+              Already have an account?{" "}
+              <NavLink
+                to="/login"
+                className="text-primary hover:text-primary-dark font-semibold transition-colors"
+              >
+                Sign In
+              </NavLink>
+            </p>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

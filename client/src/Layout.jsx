@@ -12,9 +12,11 @@ export default function Layout() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-black overflow-x-hidden">
+    <div className="w-full min-h-screen bg-surface-secondary overflow-x-hidden font-sans">
       <Navbar />
-      <Outlet />
+      <main className="min-h-[calc(100vh-80px)]">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

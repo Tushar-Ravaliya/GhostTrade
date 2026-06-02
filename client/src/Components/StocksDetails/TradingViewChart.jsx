@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, memo } from 'react';
+import React, { useEffect, useRef, memo } from "react";
 
 function TradingViewChart({ symbol = "AAPL" }) {
   const container = useRef();
@@ -6,13 +6,13 @@ function TradingViewChart({ symbol = "AAPL" }) {
   useEffect(() => {
     // Clear previous widget when symbol changes
     if (container.current) {
-      container.current.innerHTML = '';
+      container.current.innerHTML = "";
     }
 
-    const widgetContainer = document.createElement('div');
-    widgetContainer.className = 'tradingview-widget-container__widget';
-    widgetContainer.style.height = 'calc(100% - 32px)';
-    widgetContainer.style.width = '100%';
+    const widgetContainer = document.createElement("div");
+    widgetContainer.className = "tradingview-widget-container__widget";
+    widgetContainer.style.height = "calc(100% - 32px)";
+    widgetContainer.style.width = "100%";
     container.current.appendChild(widgetContainer);
 
     const script = document.createElement("script");
@@ -20,29 +20,24 @@ function TradingViewChart({ symbol = "AAPL" }) {
     script.type = "text/javascript";
     script.async = true;
     script.innerHTML = JSON.stringify({
-      "autosize": true,
-      "symbol": symbol,
-      "interval": "D",
-      "timezone": "Etc/UTC",
-      "theme": "light",
-      "style": "1",
-      "locale": "en",
-      "enable_publishing": false,
-      "allow_symbol_change": true,
-      "calendar": false,
-      "support_host": "https://www.tradingview.com"
+      autosize: true,
+      symbol: symbol,
+      interval: "D",
+      timezone: "Etc/UTC",
+      theme: "light",
+      style: "1",
+      locale: "en",
+      enable_publishing: false,
+      allow_symbol_change: true,
+      calendar: false,
+      support_host: "https://www.tradingview.com",
     });
     container.current.appendChild(script);
   }, [symbol]);
 
   return (
-    <div className="bg-white rounded-2xl border border-border overflow-hidden">
-      <div
-        className="tradingview-widget-container"
-        ref={container}
-        style={{ height: "480px", width: "100%" }}
-      >
-      </div>
+    <div className="bg-white rounded-2xl border border-border overflow-hidden h-[500px]">
+      <div className="tradingview-widget-container h-full w-full" ref={container}></div>
     </div>
   );
 }

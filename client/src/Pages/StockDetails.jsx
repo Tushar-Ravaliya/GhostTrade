@@ -37,9 +37,13 @@ const StockDetails = () => {
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
         <nav className="flex items-center gap-2 text-sm text-text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+          <Link to="/" className="hover:text-primary transition-colors">
+            Home
+          </Link>
           <span>›</span>
-          <Link to="/market" className="hover:text-primary transition-colors">Stocks</Link>
+          <Link to="/market" className="hover:text-primary transition-colors">
+            Stocks
+          </Link>
           <span>›</span>
           <span className="text-text-primary font-medium">{symbol}</span>
         </nav>

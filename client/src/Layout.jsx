@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
+import ToastContainer from "./Components/Toast";
 import { Outlet } from "react-router-dom";
 import useAuthStore from "./store/useAuthStore";
 
@@ -18,6 +19,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <ToastContainer />
     </div>
   );
 }

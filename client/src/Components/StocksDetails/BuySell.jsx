@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthStore from "../../store/useAuthStore";
+import useToast from "../../store/useToast";
 import { Lock, ShieldCheck, Minus, Plus } from "lucide-react";
 
 const API_BASE = "http://localhost:8000/api/v1";
@@ -12,9 +13,9 @@ const BuySell = ({ symbol, stockData }) => {
   const [loading, setLoading] = useState(false);
   const [holdingQty, setHoldingQty] = useState(0);
   const [holdingAvgPrice, setHoldingAvgPrice] = useState(0);
-  const [message, setMessage] = useState(null); // { type: 'success' | 'error', text: '' }
 
   const { user, isAuthenticated, fetchUser } = useAuthStore();
+  const addToast = useToast((s) => s.addToast);
   const navigate = useNavigate();
 
   const marketPrice = stockData?.close ? parseFloat(stockData.close) : 0;
@@ -45,36 +46,33 @@ const BuySell = ({ symbol, stockData }) => {
     fetchHolding();
   }, [isAuthenticated, symbol]);
 
-  const clearMessage = () => {
-    setTimeout(() => setMessage(null), 4000);
-  };
+
 
   const handleTrade = async () => {
     if (!isAuthenticated) return;
 
     // Validate sell quantity
     if (tradeType === "sell" && quantity > holdingQty) {
-      setMessage({
-        type: "error",
-        text: `You only own ${holdingQty} share(s). Cannot sell ${quantity}.`,
-      });
-      clearMessage();
+      addToast(
+        "error",
+        "Insufficient Shares",
+        `You only own ${holdingQty} share(s). Cannot sell ${quantity}.`
+      );
       return;
     }
 
     // Validate buy balance
     if (tradeType === "buy" && user?.balance < parseFloat(estimatedTotal)) {
-      setMessage({
-        type: "error",
-        text: `Insufficient balance. You have $${user.balance.toFixed(2)} but need $${estimatedTotal}.`,
-      });
-      clearMessage();
+      addToast(
+        "error",
+        "Insufficient Balance",
+        `You have $${user.balance.toFixed(2)} but need $${estimatedTotal}.`
+      );
       return;
     }
 
     try {
       setLoading(true);
-      setMessage(null);
 
       const endpoint =
         tradeType === "buy"
@@ -88,7 +86,6 @@ const BuySell = ({ symbol, stockData }) => {
       );
 
       if (data.statusCode === 200) {
-        setMessage({ type: "success", text: data.message });
 
         // Update local holding state
         if (data.data.portfolio) {
@@ -98,15 +95,24 @@ const BuySell = ({ symbol, stockData }) => {
 
         // Refresh user to update balance in navbar
         await fetchUser();
+
+        // Fire success toast
+        const updatedBalance = useAuthStore.getState().user?.balance || 0;
+        addToast(
+          "success",
+          `Successfully ${tradeType === "buy" ? "bought" : "sold"} ${quantity} share${quantity > 1 ? "s" : ""} of ${symbol}`,
+          `Total: $${estimatedTotal} • Balance: $${updatedBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          { label: "View in Portfolio", href: "/portfolio" }
+        );
+
         setQuantity(1);
       }
     } catch (err) {
       const errMsg =
         err.response?.data?.message || "Trade failed. Please try again.";
-      setMessage({ type: "error", text: errMsg });
+      addToast("error", "Trade Failed", errMsg);
     } finally {
       setLoading(false);
-      clearMessage();
     }
   };
 
@@ -126,7 +132,7 @@ const BuySell = ({ symbol, stockData }) => {
         {/* Buy/Sell Toggle */}
         <div className="flex gap-2 mb-5">
           <button
-            onClick={() => { setTradeType("buy"); setMessage(null); }}
+            onClick={() => setTradeType("buy")}
             className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 ${
               tradeType === "buy"
                 ? "bg-primary text-white shadow-sm"
@@ -136,7 +142,7 @@ const BuySell = ({ symbol, stockData }) => {
             Buy
           </button>
           <button
-            onClick={() => { setTradeType("sell"); setMessage(null); }}
+            onClick={() => setTradeType("sell")}
             className={`flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 ${
               tradeType === "sell"
                 ? "bg-danger text-white shadow-sm"
@@ -247,18 +253,7 @@ const BuySell = ({ symbol, stockData }) => {
               </div>
             </div>
 
-            {/* Message Alert */}
-            {message && (
-              <div
-                className={`mb-4 p-3 rounded-xl text-center font-medium text-sm transition-all duration-300 ${
-                  message.type === "success"
-                    ? "bg-primary-50 border border-primary/20 text-primary-dark"
-                    : "bg-danger-light border border-danger/20 text-danger-dark"
-                }`}
-              >
-                {message.type === "success" ? "✓" : "✕"} {message.text}
-              </div>
-            )}
+
 
             {/* Action Button */}
             <button
